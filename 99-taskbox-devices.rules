@@ -1,0 +1,16 @@
+# Custom udev rules for MacGyver demo devices
+
+# GPIO device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2a19", ATTRS{idProduct}=="0800", ATTRS{serial}=="NLGP240103G0493", SYMLINK+="tty_gpio"
+
+# Sliders device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="801e", ATTRS{serial}=="F517D8F65053344E342E3120FF0E0E26", SYMLINK+="tty_sliders"
+
+# Buttons device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="801e", ATTRS{serial}=="500994DD5053344E342E3120FF0E130D", SYMLINK+="tty_buttons"
+
+# Wires device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="801e", ATTRS{serial}=="898FB9135053344E342E3120FF0F0D10", SYMLINK+="tty_wires"
+
+# Knob device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="80fc", ATTRS{serial}=="547366074A57305020312E591E0610FF", SYMLINK+="tty_knob"

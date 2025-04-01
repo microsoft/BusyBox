@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Monitoring Dashboard</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .device-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 300px;
+            overflow-y: auto;
+        }
+        .device-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .data-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: monospace;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 12px;
+        }
+        .error {
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Taskboard Monitoring Dashboard</h1>
+    
+    <div class="dashboard">
+        <div id="sliders" class="device-card">
+            <div class="device-title">Sliders</div>
+            <div class="data-container"></div>
+        </div>
+        <div id="lcd" class="device-card">
+            <div class="device-title">LCD</div>
+            <div class="data-container"></div>
+        </div>
+        <div id="buttons" class="device-card">
+            <div class="device-title">Buttons</div>
+            <div class="data-container"></div>
+        </div>
+        <div id="knob" class="device-card">
+            <div class="device-title">Knob</div>
+            <div class="data-container"></div>
+        </div>
+        <div id="gpio" class="device-card">
+            <div class="device-title">GPIO</div>
+            <div class="data-container"></div>
+        </div>
+        <div id="wires" class="device-card">
+            <div class="device-title">Wires</div>
+            <div class="data-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Connect to the WebSocket server
+        const socket = io();
+        
+        // Device containers
+        const devices = ['sliders', 'lcd', 'buttons', 'knob', 'gpio', 'wires'];
+        
+        // Listen for device updates
+        socket.on('device_update', function(msg) {
+            const deviceName = msg.device;
+            const data = msg.data;
+            
+            // Get device container
+            const deviceElement = document.getElementById(deviceName);
+            if (!deviceElement) return;
+            
+            const dataContainer = deviceElement.querySelector('.data-container');
+            
+            // Create new data entry
+            const entry = document.createElement('div');
+            entry.className = 'data-entry';
+            
+            // Format the timestamp
+            const date = new Date(data.timestamp * 1000);
+            const timeStr = date.toLocaleTimeString();
+            
+            // Add timestamp
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = timeStr;
+            entry.appendChild(timestamp);
+            
+            // Add data content
+            const content = document.createElement('div');
+            
+            if (data.error) {
+                content.className = 'error';
+                content.textContent = `Error: ${data.error}`;
+            } else {
+                content.textContent = data.data;
+            }
+            
+            entry.appendChild(content);
+            
+            // Add to container (prepend to show newest first)
+            dataContainer.prepend(entry);
+            
+            // Limit to 5 entries per device
+            const entries = dataContainer.querySelectorAll('.data-entry');
+            if (entries.length > 5) {
+                for (let i = 5; i < entries.length; i++) {
+                    entries[i].remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
