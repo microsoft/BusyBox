@@ -4,9 +4,14 @@ import serial
 import os
 import signal
 from identify_devices import find_unmapped_device
-from game_utils import DEVICES, GPIODeviceInterface, LCDInterface
+from game_utils import (
+    DEVICES,
+    WEB_SERVER_PORT,
+    GPIODeviceInterface,
+    LCDInterface,
+    SerialMessageDecoderAndPublisher,
+)
 from web_server import start_server, emit_device_data
-import paho.mqtt.client as mqtt
 from game_state_manager import GameStateManager
 
 # Flag to control threads
@@ -17,7 +22,7 @@ def signal_handler(sig, frame):
     print("\nStopping monitoring threads...")
     running = False
 
-def monitor_device(device_name, device_path):
+def monitor_device(device_name, device_path, publisher):
     """Monitor a device continuously and emit data via websocket"""
     print(f"Starting monitoring thread for {device_name} at {device_path}")
     if not os.path.exists(device_path):
@@ -31,6 +36,7 @@ def monitor_device(device_name, device_path):
                 if data:
                     try:
                         decoded = data.decode('utf-8', errors='replace')
+                        publisher.parse_serial_message_and_publish(decoded)
                         timestamp = time.time()
                         # Send data to web clients
                         emit_device_data(device_name, {
@@ -54,7 +60,7 @@ def monitor_device(device_name, device_path):
             'raw': False
         })
 
-def interact_with_gpio(device_name, device_path):
+def interact_with_gpio(device_name, device_path, publisher):
     """Monitor GPIO swithces and emit data via websocket"""
     print(f"Starting monitoring thread for {device_name} at {device_path}")
     if not os.path.exists(device_path):
@@ -72,6 +78,8 @@ def interact_with_gpio(device_name, device_path):
                 f"LED Green: {gpio_device.io_states['led_green']}"
             )
             try:
+                publisher.parse_serial_message_and_publish(switch_state)
+                publisher.parse_serial_message_and_publish(led_states)
                 timestamp = time.time()
                 # Send data to web clients
                 emit_device_data(device_name, {
@@ -102,7 +110,7 @@ def interact_with_gpio(device_name, device_path):
             'raw': False
         })
 
-def spin_lcd(device_name, device_path):
+def spin_lcd(device_name, device_path, publisher):
     """Interact with the LCD device and emit data via websocket"""
     print(f"Starting monitoring thread for {device_name} at {device_path}")
     if not os.path.exists(device_path):
@@ -113,6 +121,7 @@ def spin_lcd(device_name, device_path):
         while running:
             current_text = lcd_device.get_current_text()
             try:
+                publisher.parse_serial_message_and_publish(current_text)
                 timestamp = time.time()
                 # Send data to web clients
                 emit_device_data(device_name, {
@@ -152,29 +161,30 @@ if __name__ == "__main__":
     # Start the web server in a separate thread
     web_thread = threading.Thread(target=start_server, daemon=True)
     web_thread.start()
-    print("Web server started at http://localhost:5000")
+    print(f"Web server started at http://localhost:{WEB_SERVER_PORT}")
     
     # Create threads for each device
     threads = []
     for device_name, device_path in DEVICES.items():
+        publisher = SerialMessageDecoderAndPublisher()
         if device_name == "lcd":
             thread = threading.Thread(
                 target=spin_lcd, 
-                args=(device_name, device_path),
+                args=(device_name, device_path, publisher),
                 name=f"LCD-{device_name}",
                 daemon=True
             )
         elif device_name == "gpio":
             thread = threading.Thread(
                 target=interact_with_gpio, 
-                args=(device_name, device_path),
+                args=(device_name, device_path, publisher),
                 name=f"GPIO-{device_name}",
                 daemon=True
             )
         elif device_path:
             thread = threading.Thread(
                 target=monitor_device, 
-                args=(device_name, device_path),
+                args=(device_name, device_path, publisher),
                 name=f"Monitor-{device_name}",
                 daemon=True
             )

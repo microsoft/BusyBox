@@ -1,7 +1,45 @@
-MQTT_BROKER = "127.0.0.1"
-MQTT_PORT = 1883
+import socket
+import subprocess
+
+def get_ethernet_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        result = subprocess.run(['ip', 'addr', 'show'], capture_output=True, text=True)
+        output = result.stdout
+        eth_interfaces = re.findall(r'eth[0-9]+', output)
+        for interface in eth_interfaces:
+            if ip in output.split(interface)[1].split("inet ")[1]:
+                return ip
+        return None
+    except Exception as e:
+        return None
+
+def get_mqtt_broker():
+    """Lazy initialization for MQTT_BROKER."""
+    if not hasattr(get_mqtt_broker, "_cached_broker"):
+        print("Caching MQTT broker address from ethernet interface, This should only happen once...")
+        get_mqtt_broker._cached_broker = get_ethernet_ip() or "127.0.0.1"
+    return get_mqtt_broker._cached_broker
+
+MQTT_BROKER = get_mqtt_broker()
+MQTT_PORT = 1884
+WEB_SERVER_PORT = 5000
+
+# command topics
 GPIO_LED_TOPIC = "gpio_led_command"
 LCD_COMMAND_TOPIC = "lcd_command"
+# device state topics
+SLIDERS_STATE = "sliders_state"
+BUTTON_WHITE_STATE = "button_white_state"
+BUTTON_YELLOW_STATE = "button_yellow_state"
+BUTTON_RED_STATE = "button_red_state"
+BUTTON_GREEN_STATE = "button_green_state"
+ROTARY_STATE = "rotary_state"
+SWITCHES_STATE = "switches_state"
+WIRES_STATE = "wires_state"
 
 DEVICES = {
     "buttons": "/dev/tty_buttons",
@@ -17,6 +55,7 @@ import serial
 import time
 import json
 import threading
+import re
 
 class GPIODeviceInterface:
     HIGH_REF_PIN = "6"
@@ -199,6 +238,58 @@ class LCDInterface:
         self.close()
         print("LCD serial connection closed")
 
+class SerialMessageDecoderAndPublisher:
+    def __init__(self):
+        self.client = mqtt.Client()
+        self.client.connect(MQTT_BROKER, MQTT_PORT)
+        self.client.loop_start()
+
+    def parse_serial_message_and_publish(self, decoded):
+        decoded = decoded.strip()
+        msg_id = decoded.split()[0]
+        if msg_id == "bottom_slider:":
+            parts = decoded.split()
+            slider_values = {
+                "bottom_slider": int(parts[1]),
+                "top_slider": int(parts[3])
+            }
+            self.client.publish(SLIDERS_STATE, json.dumps(slider_values))
+        elif msg_id == "Buttons":
+            after_colon = decoded.split(':')[1].strip()
+            numbers = re.findall(r'\d+', after_colon)
+            numbers = numbers[:4]
+            numbers = [int(num) for num in numbers]
+            button_white = 0 in numbers
+            button_yellow = 1 in numbers
+            button_red = 2 in numbers
+            button_green = 3 in numbers
+            button_dict = {
+                "white": button_white,
+                "yellow": button_yellow,
+                "red": button_red,
+                "green": button_green
+            }
+            if button_white:
+                self.client.publish(BUTTON_WHITE_STATE, "1")
+            if button_yellow:
+                self.client.publish(BUTTON_YELLOW_STATE, "1")
+            if button_red:
+                self.client.publish(BUTTON_RED_STATE, "1")
+            if button_green:
+                self.client.publish(BUTTON_GREEN_STATE, "1")
+        elif msg_id == "Rotary:":
+            rotary_value = int(decoded.split(':')[1])
+            self.client.publish(ROTARY_STATE, json.dumps(rotary_value))
+        elif msg_id == "Switch":
+            parts = decoded.split(',')
+            switch_left = parts[0].split(':')[1].strip() == "True"
+            switch_right = parts[1].split(':')[1].strip() == "True"
+            self.client.publish(SWITCHES_STATE, json.dumps({"left": switch_left, "right": switch_right}))
+        elif msg_id == "Wire":
+            parts = decoded.split("Wire")
+            wire_values = [int(part.split(":")[1].strip()) for part in parts if part.strip()]
+            wire_values = wire_values[:4]
+            self.client.publish(WIRES_STATE, json.dumps(wire_values))
 
 if __name__ == "__main__":
     # test GPIODeviceInterface
@@ -220,9 +311,19 @@ if __name__ == "__main__":
         while True:
             '''bash
             # control LEDs
-            mosquitto_pub -h 127.0.0.1 -p 1883 -t gpio_led_command -m '{"red": true, "yellow": false, "green": true}'
+            mosquitto_pub -h 10.137.68.80 -p 1884 -t gpio_led_command -m '{"red": true, "yellow": false, "green": true}'
             # control LCD
-            mosquitto_pub -h 127.0.0.1 -p 1883 -t lcd_command -m '{"top_line": "Hello", "bottom_line": "World", "backlight": true}'
+            mosquitto_pub -h 10.137.68.80 -p 1884 -t lcd_command -m '{"top_line": "Hello", "bottom_line": "World", "backlight": true}'
+            
+            # listen to devices
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t sliders_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t button_white_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t button_yellow_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t button_red_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t button_green_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t rotary_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t switches_state
+            mosquitto_sub -h 10.137.68.80 -p 1884 -t wires_state
             '''
             # Keep the program running to listen for MQTT messages
             time.sleep(0.25)

@@ -4,9 +4,18 @@ import re
 import json
 import paho.mqtt.publish as publish
 
+from game_utils import (
+    MQTT_BROKER, 
+    MQTT_PORT, 
+    WEB_SERVER_PORT, 
+    LCD_COMMAND_TOPIC,
+    get_ethernet_ip,
+)
+
 class GameStateManager:
     def __init__(self):
         self.state = "initial"
+        self.ip = None
 
     def set_state(self, new_state):
         self.state = new_state
@@ -19,37 +28,25 @@ class GameStateManager:
 
     def run(self):
         if self.state == "initial":
-            self.ip = self.get_ethernet_ip()
+            self.ip = get_ethernet_ip()
             try:
                 mqtt_payload = {
-                    "top_line": "server:5000", 
+                    "top_line": f"server:{WEB_SERVER_PORT}", 
                     "bottom_line": self.ip if self.ip else "No IP found", 
                     "backlight": True
                 }
-                publish.single("lcd_command", json.dumps(mqtt_payload), hostname="127.0.0.1", port=1883)
+                publish.single(LCD_COMMAND_TOPIC, json.dumps(mqtt_payload), hostname=MQTT_BROKER, port=MQTT_PORT)
                 print(f"Sent IP address to LCD: {self.ip}")
             except Exception as e:
                 print(f"Failed to send MQTT message: {e}")
-            self.state = "wait_for_start"
+            self.state = "wait_for_difficulty"
         
-        elif self.state == "wait_for_start":
-            pass
-    
-    def get_ethernet_ip(self):
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("8.8.8.8", 80))
-            ip = s.getsockname()[0]
-            s.close()
-            result = subprocess.run(['ip', 'addr', 'show'], capture_output=True, text=True)
-            output = result.stdout
-            eth_interfaces = re.findall(r'eth[0-9]+', output)
-            for interface in eth_interfaces:
-                if ip in output.split(interface)[1].split("inet ")[1]:
-                    return ip
-            return None
-        except Exception as e:
-            return None
+        elif self.state == "wait_for_difficulty":
+            self.wait_for_difficulty()
+
+    def wait_for_difficulty(self):
+        # Placeholder for waiting for difficulty selection
+        pass
         
 if __name__ == "__main__":
     gsm = GameStateManager()

@@ -1,5 +1,8 @@
+# some instructions
+
 ```bash
 systemctl status game-bringup.service
+systemctl restart game-bringup.service
 ```
 
 ```bash

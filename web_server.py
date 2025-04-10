@@ -4,6 +4,8 @@ import threading
 import json
 import time
 
+from game_utils import WEB_SERVER_PORT
+
 # Create Flask app and SocketIO instance
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
@@ -16,7 +18,7 @@ def index():
 
 # Start the WebSocket server
 def start_server():
-    socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=WEB_SERVER_PORT, debug=False, allow_unsafe_werkzeug=True)
 
 # Function to emit data to clients
 def emit_device_data(device_name, data):

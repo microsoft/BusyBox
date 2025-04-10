@@ -12,7 +12,7 @@
             padding: 20px;
             background-color: #f0f0f0;
         }
-        .dashboard {
+        .monitor {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
@@ -47,36 +47,129 @@
         .error {
             color: #d9534f;
         }
+        /* Tab styles */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Instructions styles */
+        #instructions-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #instructions-editor {
+            width: 100%;
+            min-height: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            margin-bottom: 10px;
+        }
+        #instructions-display {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
-    <h1>Taskboard Monitoring Dashboard</h1>
+    <h1>Taskbox Dashboard</h1>
     
-    <div class="dashboard">
-        <div id="sliders" class="device-card">
+    <!-- Tab Navigation -->
+    <div class="tabs">
+        <div class="tab active" data-tab="instructions">Instructions</div>
+        <div class="tab" data-tab="monitor">Monitor</div>
+    </div>
+    
+    <!-- Monitor Tab Content -->
+    <div id="monitor" class="tab-content">
+        <div class="monitor" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 20px;">
+            <div id="sliders" class="device-card">
             <div class="device-title">Sliders</div>
             <div class="data-container"></div>
-        </div>
-        <div id="lcd" class="device-card">
+            </div>
+            <div id="lcd" class="device-card">
             <div class="device-title">LCD</div>
             <div class="data-container"></div>
-        </div>
-        <div id="buttons" class="device-card">
+            </div>
+            <div id="buttons" class="device-card">
             <div class="device-title">Buttons</div>
             <div class="data-container"></div>
-        </div>
-        <div id="knob" class="device-card">
+            </div>
+            <div id="knob" class="device-card">
             <div class="device-title">Knob</div>
             <div class="data-container"></div>
-        </div>
-        <div id="gpio" class="device-card">
+            </div>
+            <div id="gpio" class="device-card">
             <div class="device-title">GPIO</div>
             <div class="data-container"></div>
-        </div>
-        <div id="wires" class="device-card">
+            </div>
+            <div id="wires" class="device-card">
             <div class="device-title">Wires</div>
             <div class="data-container"></div>
+            </div>
         </div>
+    </div>
+    
+    <!-- Instructions Tab Content -->
+    <div id="instructions" class="tab-content active">
+        <div id="instructions-display">Loading instructions...</div>
+
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+            // Fetch and render markdown
+            fetch('/static/instructions.md')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load instructions');
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    document.getElementById('instructions-display').innerHTML = marked.parse(markdown);
+                })
+                .catch(error => {
+                    document.getElementById('instructions-display').innerHTML = 
+                        `<div class="error">Error loading instructions: ${error.message}</div>`;
+                });
+        </script>
     </div>
 
     <script>
@@ -133,6 +226,22 @@
                     entries[i].remove();
                 }
             }
+        });
+        
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabContentId = tab.getAttribute('data-tab');
+                document.getElementById(tabContentId).classList.add('active');
+            });
         });
     </script>
 </body>
