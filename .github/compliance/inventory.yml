@@ -1,8 +1,5 @@
 inventory:
 - source: DirectOwners
   items:
-  - id: v-defortier@microsoft.com
-  - id: v-tadamson@microsoft.com
   - id: galenmullins@microsoft.com
   - id: morrissharp@microsoft.com
-  isProduction: false
