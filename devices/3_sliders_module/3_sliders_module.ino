@@ -25,6 +25,10 @@ unsigned long lastOutputMs = 0;
 float emaA0 = -1.0f; // initialized on first sample
 float emaA1 = -1.0f;
 
+// Alive beacon
+#define MODULE_NAME "sliders_module"
+#include "../include/alive_beacon.h"
+
 void setup() {
   Serial.begin(SERIAL_BAUD);
   // DON'T block waiting for Serial on a Nano; that can hang on some boards.
@@ -36,9 +40,11 @@ void setup() {
   // small info line (won't block)
   Serial.println(F("A0/A1 EWMA monitor (TAU_MS=50ms, max 20Hz)"));
   lastSampleMicros = micros();
+  initAliveBeacon();
 }
 
 void loop() {
+  runAliveBeacon();
   // read both channels as fast as possible
   unsigned long nowMicros = micros();
   unsigned long dtMicros = nowMicros - lastSampleMicros;

@@ -179,8 +179,13 @@ void pollSerial() {
                 Serial.println(F("Input overflow; line dropped."));
             }
         }
+        runAliveBeacon();
     }
 }
+
+// Alive beacon
+#define MODULE_NAME "e-ink_display_module"
+#include "../include/alive_beacon.h"
 
 void setup() {
     Serial.begin(9600);
@@ -189,6 +194,7 @@ void setup() {
     display.init(9600); // keep same baud for internal debug (if enabled)
     updateDisplay();
     Serial.println(F("Ready. Send '1:Your Text' or '2:Your Text' then newline."));
+    initAliveBeacon();
 }
 
 void loop() {
