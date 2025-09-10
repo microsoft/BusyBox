@@ -38,6 +38,35 @@ unsigned long lastEdgeTime[NUM_PINS];
 // For LED hold logic
 unsigned long ledHoldUntil[NUM_PINS] = {0, 0, 0, 0};
 
+// --- Alive / identity beacon (non-blocking) ---
+// Periodically announces module identity so host can detect which /dev/ttyUSBx this is.
+// Keeps baud at 9600 (already configured in setup()). Uses randomized initial phase to
+// reduce chance all modules speak simultaneously right after reset/power-up.
+#define MODULE_NAME "buttons_module"
+const unsigned long ALIVE_INTERVAL_MS = 5000UL; // 5s between identity beacons
+unsigned long nextAliveAt = 0;                  // next scheduled beacon time (millis)
+
+void initAliveBeacon() {
+  // Seed PRNG from floating analog pin (choose an unused analog input)
+  randomSeed(analogRead(A0));
+  // Randomize first beacon between 0.5s and interval-0.5s (guard against too-small range)
+  unsigned long spread = (ALIVE_INTERVAL_MS > 1000UL) ? (ALIVE_INTERVAL_MS - 1000UL) : 1UL;
+  unsigned long phase = 500UL + (spread > 1 ? (unsigned long)random(spread) : 0UL);
+  nextAliveAt = millis() + phase;
+}
+
+void runAliveBeacon() {
+  unsigned long now = millis();
+  if ((long)(now - nextAliveAt) >= 0) {
+    Serial.println(F(MODULE_NAME)); // EXACT required output: buttons_module
+    nextAliveAt += ALIVE_INTERVAL_MS;
+    // If we fell behind (e.g., millis wrapped or long pause), reschedule forward
+    if ((long)(now - nextAliveAt) >= 0) {
+      nextAliveAt = now + ALIVE_INTERVAL_MS;
+    }
+  }
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -59,11 +88,17 @@ void setup() {
   Serial.print(F("DEBOUNCE_MS="));
   Serial.println(DEBOUNCE_MS);
   printStates();
+
+  // Initialize alive beacon AFTER initial informational prints so identity beacons are clean
+  initAliveBeacon();
 }
 
 void loop() {
   bool anyChanged = false;
   unsigned long now = millis();
+
+  // Periodic identity message (non-blocking)
+  runAliveBeacon();
 
 
   for (uint8_t i = 0; i < NUM_PINS; ++i) {
