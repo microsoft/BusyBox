@@ -47,6 +47,9 @@
 */
 
 #include <GxEPD2_BW.h>
+// Alive beacon (must be before any use of runAliveBeacon)
+#define MODULE_NAME "e-ink_display_module"
+#include <alive_beacon.h>
 
 // Select the correct driver class for your specific 2.13" variant.
 // For the 250x122 (V3/V4) black/white module (SSD1680) use GxEPD2_213_B74 (or _B73 depending on revision).
@@ -179,13 +182,8 @@ void pollSerial() {
                 Serial.println(F("Input overflow; line dropped."));
             }
         }
-        runAliveBeacon();
     }
 }
-
-// Alive beacon
-#define MODULE_NAME "e-ink_display_module"
-#include <alive_beacon.h>
 
 void setup() {
     Serial.begin(9600);
@@ -198,6 +196,7 @@ void setup() {
 }
 
 void loop() {
+    runAliveBeacon();
     pollSerial();
 }
 
