@@ -9,6 +9,15 @@ const unsigned long DEBOUNCE_MS = 50;     // 50 ms debounce / max output interva
 const float TAU_MS = 50.0f;               // EWMA time constant (ms) - smoothing window
 const int DELTA_THRESHOLD = 2;            // minimum integer change (0..1023) to report
 const unsigned long SERIAL_BAUD = 9600;   // 115200;
+// Heartbeat: 3 distinct flashes (ON OFF ON OFF ON) plus tail OFF beats
+const uint8_t HB_FLASHES = 3;
+const unsigned long HB_BEAT_MS = 500; // 2 Hz
+const uint8_t HB_MIN_BEATS = (uint8_t)(HB_FLASHES * 2 - 1); // 3 flashes -> 5 beats minimal pattern
+const uint8_t HB_TAIL_OFF = 2; // extra OFF tail beats for clarity
+const uint8_t HB_CYCLE_BEATS = HB_MIN_BEATS + HB_TAIL_OFF; // 5 + 2 = 7 beats total
+const unsigned long HB_CYCLE_PAUSE_MS = 1500; // extended pause after pattern
+uint8_t hbBeatIndex = 0; // 0..HB_CYCLE_BEATS-1
+unsigned long hbNextBeatDueMs = 0;
 
 unsigned long lastSampleMicros = 0;
 unsigned long lastOutputMs = 0;
@@ -21,6 +30,8 @@ void setup() {
   // DON'T block waiting for Serial on a Nano; that can hang on some boards.
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 
   // small info line (won't block)
   Serial.println(F("A0/A1 EWMA monitor (TAU_MS=50ms, max 20Hz)"));
@@ -75,4 +86,18 @@ void loop() {
   }
 
   // small tight loop; no delay required — analogRead itself is ~100µs.
+
+  // Heartbeat
+  if (nowMs >= hbNextBeatDueMs) {
+    bool on = (hbBeatIndex % 2 == 0) && (hbBeatIndex/2 < HB_FLASHES);
+    digitalWrite(LED_BUILTIN, on ? HIGH : LOW);
+    hbBeatIndex++;
+    if (hbBeatIndex >= HB_CYCLE_BEATS) {
+      digitalWrite(LED_BUILTIN, LOW);
+      hbBeatIndex = 0;
+      hbNextBeatDueMs = nowMs + HB_CYCLE_PAUSE_MS;
+    } else {
+      hbNextBeatDueMs = nowMs + HB_BEAT_MS;
+    }
+  }
 }

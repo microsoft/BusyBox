@@ -15,6 +15,16 @@
 const int pinCLK = 2; // A (CLK)
 const int pinDT  = 3; // B (DT)
 const int pinSW  = 4; // Switch
+// Heartbeat: 2 distinct flashes (ON-OFF-ON) then idle pauses
+const uint8_t HB_FLASHES = 2; // number of flashes
+const unsigned long HB_BEAT_MS = 500; // 2 Hz
+// Distinct flashes need an OFF between each; minimal beats = flashes*2 -1; add at least 2 OFF beats tail
+const uint8_t HB_MIN_BEATS = (uint8_t)(HB_FLASHES * 2 - 1);
+const uint8_t HB_TAIL_OFF = 2; // extra OFF beats to improve identification spacing
+const uint8_t HB_CYCLE_BEATS = HB_MIN_BEATS + HB_TAIL_OFF; // ON OFF ON OFF OFF for 2 flashes
+const unsigned long HB_CYCLE_PAUSE_MS = 1500; // long OFF pause after pattern
+uint8_t hbBeatIndex = 0; // 0..HB_CYCLE_BEATS-1
+unsigned long hbNextBeatDueMs = 0; // scheduler timestamp
 
 
 int lastState = 0;
@@ -36,6 +46,8 @@ void setup() {
     pinMode(pinCLK, INPUT_PULLUP);
     pinMode(pinDT, INPUT_PULLUP);
     pinMode(pinSW, INPUT_PULLUP);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
     int a = digitalRead(pinCLK);
     int b = digitalRead(pinDT);
     lastState = (a << 1) | b;
@@ -77,5 +89,20 @@ void loop() {
             Serial.println(F("Knob Button released"));
         }
         lastSW = currentSW;
+    }
+
+    // Heartbeat
+    unsigned long now = millis();
+    if (now >= hbNextBeatDueMs) {
+        bool on = (hbBeatIndex % 2 == 0) && (hbBeatIndex/2 < HB_FLASHES);
+        digitalWrite(LED_BUILTIN, on ? HIGH : LOW);
+        hbBeatIndex++;
+        if (hbBeatIndex >= HB_CYCLE_BEATS) {
+            digitalWrite(LED_BUILTIN, LOW);
+            hbBeatIndex = 0;
+            hbNextBeatDueMs = now + HB_CYCLE_PAUSE_MS;
+        } else {
+            hbNextBeatDueMs = now + HB_BEAT_MS;
+        }
     }
 }
