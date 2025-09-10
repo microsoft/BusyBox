@@ -1,6 +1,6 @@
 /*
   nano_input_change_debounce_binary.ino
-  Reads D2..D5, debounces each input, and prints all 4 states (1 for HIGH, 0 for LOW)
+  Reads D2, D3 debounces each input, and prints all states (1 for HIGH, 0 for LOW)
   whenever any debounced state changes.
 
   Config:
