@@ -1,0 +1,10 @@
+# device_build_targets.yaml
+board: arduino:avr:nano:cpu=atmega328
+
+devices:
+  /dev/ttyUSB0: 1_buttons_module
+  /dev/ttyUSB1: 2_knob_module
+  /dev/ttyUSB2: 3_sliders_module
+  /dev/ttyUSB3: 4_switches_module
+  /dev/ttyUSB4: 5_wires_module
+  /dev/ttyUSB5: 6_e-ink_display_module
