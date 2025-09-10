@@ -40,7 +40,7 @@ unsigned long ledHoldUntil[NUM_PINS] = {0, 0, 0, 0};
 
 // --- Alive beacon via shared header (DRY) ---
 #define MODULE_NAME "buttons_module"
-#include "../include/alive_beacon.h"
+#include <alive_beacon.h>
 
 void setup() {
   Serial.begin(9600);

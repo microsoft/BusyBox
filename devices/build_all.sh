@@ -7,6 +7,8 @@ MAP_FILE="$SRC_DIR/device_build_targets.yaml"
 # Extract board from YAML
 BOARD=$(grep '^board:' "$MAP_FILE" | awk '{print $2}')
 
+EXTRA_INC="-I$SRC_DIR/include"
+
 for sketch in "$SRC_DIR"/*; do
     if [ -d "$sketch" ]; then
         name=$(basename "$sketch")
@@ -14,7 +16,10 @@ for sketch in "$SRC_DIR"/*; do
         mkdir -p "$build_dir"
 
         echo "=== Compiling $name with $BOARD ==="
-        arduino-cli compile --fqbn "$BOARD" "$sketch" --output-dir "$build_dir"
+                arduino-cli compile --fqbn "$BOARD" \
+                    --build-property compiler.c.extra_flags="$EXTRA_INC" \
+                    --build-property compiler.cpp.extra_flags="$EXTRA_INC" \
+                    "$sketch" --output-dir "$build_dir"
     fi
 done
 

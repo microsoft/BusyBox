@@ -27,7 +27,7 @@ float emaA1 = -1.0f;
 
 // Alive beacon
 #define MODULE_NAME "sliders_module"
-#include "../include/alive_beacon.h"
+#include <alive_beacon.h>
 
 void setup() {
   Serial.begin(SERIAL_BAUD);

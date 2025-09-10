@@ -43,7 +43,7 @@ const int8_t enc_states[] = {0, -1, 1, 0,
 
 // Alive beacon
 #define MODULE_NAME "knob_module"
-#include "../include/alive_beacon.h"
+#include <alive_beacon.h>
 
 void setup() {
     Serial.begin(9600);
