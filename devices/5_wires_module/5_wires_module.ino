@@ -37,7 +37,7 @@ unsigned long lastEdgeTime[NUM_PINS];
 
 // Alive beacon
 #define MODULE_NAME "wires_module"
-#include "../include/alive_beacon.h"
+#include <alive_beacon.h>
 
 void setup() {
   Serial.begin(9600);

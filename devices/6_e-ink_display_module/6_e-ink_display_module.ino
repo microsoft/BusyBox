@@ -185,7 +185,7 @@ void pollSerial() {
 
 // Alive beacon
 #define MODULE_NAME "e-ink_display_module"
-#include "../include/alive_beacon.h"
+#include <alive_beacon.h>
 
 void setup() {
     Serial.begin(9600);
