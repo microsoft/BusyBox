@@ -38,6 +38,10 @@ unsigned long lastEdgeTime[NUM_PINS];
 // For LED hold logic
 unsigned long ledHoldUntil[NUM_PINS] = {0, 0, 0, 0};
 
+// --- Alive beacon via shared header (DRY) ---
+#define MODULE_NAME "buttons_module"
+#include <alive_beacon.h>
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -59,11 +63,17 @@ void setup() {
   Serial.print(F("DEBOUNCE_MS="));
   Serial.println(DEBOUNCE_MS);
   printStates();
+
+  // Initialize alive beacon AFTER initial informational prints so identity beacons are clean
+  initAliveBeacon();
 }
 
 void loop() {
   bool anyChanged = false;
   unsigned long now = millis();
+
+  // Periodic identity message (non-blocking)
+  runAliveBeacon();
 
 
   for (uint8_t i = 0; i < NUM_PINS; ++i) {
