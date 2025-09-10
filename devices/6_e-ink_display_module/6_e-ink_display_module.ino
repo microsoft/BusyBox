@@ -47,6 +47,9 @@
 */
 
 #include <GxEPD2_BW.h>
+// Alive beacon (must be before any use of runAliveBeacon)
+#define MODULE_NAME "e-ink_display_module"
+#include <alive_beacon.h>
 
 // Select the correct driver class for your specific 2.13" variant.
 // For the 250x122 (V3/V4) black/white module (SSD1680) use GxEPD2_213_B74 (or _B73 depending on revision).
@@ -189,9 +192,11 @@ void setup() {
     display.init(9600); // keep same baud for internal debug (if enabled)
     updateDisplay();
     Serial.println(F("Ready. Send '1:Your Text' or '2:Your Text' then newline."));
+    initAliveBeacon();
 }
 
 void loop() {
+    runAliveBeacon();
     pollSerial();
 }
 

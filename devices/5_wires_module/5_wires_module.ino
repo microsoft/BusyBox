@@ -35,6 +35,10 @@ uint8_t lastReading[NUM_PINS];
 uint8_t stableState[NUM_PINS];
 unsigned long lastEdgeTime[NUM_PINS];
 
+// Alive beacon
+#define MODULE_NAME "wires_module"
+#include <alive_beacon.h>
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -55,6 +59,7 @@ void setup() {
 }
 
 void loop() {
+  runAliveBeacon();
   bool anyChanged = false;
   unsigned long now = millis();
 
