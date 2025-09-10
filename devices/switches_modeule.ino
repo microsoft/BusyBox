@@ -20,12 +20,32 @@ const unsigned long POLL_INTERVAL_MS = 5; // sampling interval in ms
 const uint8_t pins[] = {2, 3};
 const uint8_t NUM_PINS = sizeof(pins) / sizeof(pins[0]);
 
+// Heartbeat: 4 distinct flashes (each separated by one OFF beat) then long pause.
+// Sequence (steps, each evaluated on schedule):
+//  ON (flash1) 500ms
+//  OFF 500ms
+//  ON (flash2) 500ms
+//  OFF 500ms
+//  ON (flash3) 500ms
+//  OFF 500ms
+//  ON (flash4) 500ms
+//  OFF long pause (HB_CYCLE_PAUSE_MS)
+const uint8_t HB_FLASHES = 4;
+const unsigned long HB_BEAT_MS = 500;      // duration of ON and inter-flash OFF beats
+const unsigned long HB_CYCLE_PAUSE_MS = 1500; // long OFF after last flash
+// Total steps per cycle = flashes*2 (each flash ON plus an OFF, with last OFF being long pause)
+const uint8_t HB_TOTAL_STEPS = HB_FLASHES * 2; // 8 steps
+uint8_t hbStep = 0; // 0..HB_TOTAL_STEPS-1
+unsigned long hbNextChangeMs = 0; // when to advance heartbeat
+
 uint8_t lastReading[NUM_PINS];
 uint8_t stableState[NUM_PINS];
 unsigned long lastEdgeTime[NUM_PINS];
 
 void setup() {
   Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
   for (uint8_t i = 0; i < NUM_PINS; ++i) {
     pinMode(pins[i], USE_INTERNAL_PULLUPS ? INPUT_PULLUP : INPUT);
     lastReading[i] = digitalRead(pins[i]);
@@ -63,6 +83,22 @@ void loop() {
   }
 
   delay(POLL_INTERVAL_MS);
+
+  // Heartbeat
+  unsigned long now2 = millis();
+  if (now2 >= hbNextChangeMs) {
+    bool isOnStep = (hbStep % 2 == 0); // even steps are ON
+    bool lastStep = (hbStep == HB_TOTAL_STEPS - 1); // final OFF (long pause)
+    if (isOnStep) {
+      digitalWrite(LED_BUILTIN, HIGH); // flash ON
+      hbNextChangeMs = now2 + HB_BEAT_MS; // ON duration
+    } else {
+      digitalWrite(LED_BUILTIN, LOW); // OFF beat
+      hbNextChangeMs = now2 + (lastStep ? HB_CYCLE_PAUSE_MS : HB_BEAT_MS);
+    }
+    hbStep++;
+    if (hbStep >= HB_TOTAL_STEPS) hbStep = 0; // restart cycle
+  }
 }
 
 void printStates() {

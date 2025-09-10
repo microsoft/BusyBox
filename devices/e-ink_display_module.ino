@@ -156,7 +156,7 @@ void processCommand(char *cmd) {
         updateDisplay();
         return;
     }
-    // Optional commands (extendable)
+
     if (strcmp(cmd, "REFRESH") == 0) { updateDisplay(); Serial.println(F("Manual refresh done.")); return; }
     if (strcmp(cmd, "CLEAR") == 0) { line1[0] = 0; line2[0] = 0; updateDisplay(); Serial.println(F("Cleared.")); return; }
     Serial.print(F("Unknown cmd: '")); Serial.print(cmd); Serial.println('\'');
@@ -192,7 +192,6 @@ void setup() {
 }
 
 void loop() {
-    // Non-blocking serial polling; only refresh after full command received.
     pollSerial();
 }
 
