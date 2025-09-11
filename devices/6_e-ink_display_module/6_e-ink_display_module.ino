@@ -51,14 +51,6 @@
 #define MODULE_NAME "e-ink_display_module"
 #include <alive_beacon.h>
 
-void beaconData() {
-    Serial.print(F("Display Lines: L1='"));
-    Serial.print(line1);
-    Serial.print(F("' L2='"));
-    Serial.print(line2);
-    Serial.println('\'');
-}
-
 // Select the correct driver class for your specific 2.13" variant.
 // For the 250x122 (V3/V4) black/white module (SSD1680) use GxEPD2_213_B74 (or _B73 depending on revision).
 // If compile fails, open GxEPD2_display_selection.h example to find the matching class name and replace below.
@@ -72,6 +64,15 @@ GxEPD2_BW<GxEPD2_213_B74, 32> display(GxEPD2_213_B74(/*CS=*/10, /*DC=*/9, /*RST=
 // (Keep modest lengths; Nano SRAM is limited. 40 chars * 2 lines * ~1 byte)
 static char line1[41] = "BusyBox"; // initial text
 static char line2[41] = "v1.0";    // initial text
+
+// Beacon data printer (placed AFTER line1/line2 so they are in scope)
+void beaconData() {
+    Serial.print(F("Display Lines: L1='"));
+    Serial.print(line1);
+    Serial.print(F("' L2='"));
+    Serial.print(line2);
+    Serial.println('\'');
+}
 
 // Incoming serial line buffer
 static char inBuf[64];
