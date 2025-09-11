@@ -51,6 +51,14 @@
 #define MODULE_NAME "e-ink_display_module"
 #include <alive_beacon.h>
 
+void beaconData() {
+    Serial.print(F("Display Lines: L1='"));
+    Serial.print(line1);
+    Serial.print(F("' L2='"));
+    Serial.print(line2);
+    Serial.println('\'');
+}
+
 // Select the correct driver class for your specific 2.13" variant.
 // For the 250x122 (V3/V4) black/white module (SSD1680) use GxEPD2_213_B74 (or _B73 depending on revision).
 // If compile fails, open GxEPD2_display_selection.h example to find the matching class name and replace below.
@@ -192,6 +200,7 @@ void setup() {
     display.init(9600); // keep same baud for internal debug (if enabled)
     updateDisplay();
     Serial.println(F("Ready. Send '1:Your Text' or '2:Your Text' then newline."));
+    setAliveDataPrinter(beaconData);
     initAliveBeacon();
 }
 
