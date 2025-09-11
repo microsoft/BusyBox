@@ -38,12 +38,18 @@ inline void setAliveDataPrinter(AliveDataPrinter cb) { _alive_printer = cb; }
 
 inline void initAliveBeacon() {
   randomSeed(analogRead(A0));
+  unsigned long now = millis();
+#ifdef ALIVE_IMMEDIATE_FIRST
+  // First beacon scheduled immediately; subsequent beacons still aligned to interval cadence.
+  _alive_next_due_ms = now; // runAliveBeacon will fire at next call
+#else
   unsigned long interval = ALIVE_INTERVAL_MS;
   if (interval < 600UL) interval = 600UL;
   unsigned long spread = interval > 1000UL ? (interval - 1000UL) : 1UL;
   if ((long)spread <= 0) spread = 1;
   unsigned long phase = 500UL + (unsigned long)random(spread);
-  _alive_next_due_ms = millis() + phase;
+  _alive_next_due_ms = now + phase;
+#endif
 }
 
 inline void runAliveBeacon() {
