@@ -49,6 +49,7 @@
 #include <GxEPD2_BW.h>
 // Alive beacon (must be before any use of runAliveBeacon)
 #define MODULE_NAME "e-ink_display_module"
+#define ALIVE_IMMEDIATE_FIRST 1
 #include <alive_beacon.h>
 
 // Select the correct driver class for your specific 2.13" variant.
