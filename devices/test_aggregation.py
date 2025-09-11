@@ -21,7 +21,7 @@ EINK_IDENTITY = "e-ink_display_module"
 BAUD = 9600
 DISCOVERY_TIMEOUT = 8.0
 LOG_PATH = Path(__file__).parent / "test_aggregation.log"
-PUBLISH_INTERVAL = 5.0  # seconds
+PUBLISH_INTERVAL = 15.0  # seconds
 
 # Regex patterns to parse each device line format (loose / robust)
 # We rely on known prefixes printed by each sketch.
