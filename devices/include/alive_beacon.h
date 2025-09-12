@@ -26,7 +26,8 @@
 #endif
 
 #ifndef ALIVE_INTERVAL_MS
-#define ALIVE_INTERVAL_MS 5000UL
+// Default steady-state beacon interval (user requested 1s)
+#define ALIVE_INTERVAL_MS 1000UL
 #endif
 
 typedef void (*AliveDataPrinter)();
@@ -40,14 +41,12 @@ inline void initAliveBeacon() {
   randomSeed(analogRead(A0));
   unsigned long now = millis();
 #ifdef ALIVE_IMMEDIATE_FIRST
-  // First beacon scheduled immediately; subsequent beacons still aligned to interval cadence.
-  _alive_next_due_ms = now; // runAliveBeacon will fire at next call
+  _alive_next_due_ms = now; // immediate first publish
 #else
-  unsigned long interval = ALIVE_INTERVAL_MS;
-  if (interval < 600UL) interval = 600UL;
-  unsigned long spread = interval > 1000UL ? (interval - 1000UL) : 1UL;
-  if ((long)spread <= 0) spread = 1;
-  unsigned long phase = 500UL + (unsigned long)random(spread);
+  // Randomize first beacon anywhere within the first interval (0 .. ALIVE_INTERVAL_MS-1)
+  // to decorrelate multiple modules starting together.
+  unsigned long interval = ALIVE_INTERVAL_MS ? ALIVE_INTERVAL_MS : 1000UL;
+  unsigned long phase = (unsigned long)random(interval); // 0..interval-1
   _alive_next_due_ms = now + phase;
 #endif
 }
