@@ -316,11 +316,11 @@ def main():
     try:
         while running:
             try:
-                ts, dev, vals = q.get(timeout=0.3)
+                _, dev, vals = q.get(timeout=0.3)
             except queue.Empty:
                 continue
             topic = f"{base}/{dev}/state"
-            payload = json.dumps({"ts": ts, "values": vals})
+            payload = json.dumps({"values": vals})
             try:
                 client.publish(topic, payload, qos=0, retain=False)
                 if args.verbose:
