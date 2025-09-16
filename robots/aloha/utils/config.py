@@ -55,21 +55,19 @@ TASKBOX_TASKS = {
     26: ("TurnKnob", "Turn the knob to position 4."),
     27: ("TurnKnob", "Turn the knob to position 5."),
     28: ("TurnKnob", "Turn the knob to position 6."),
-    29: ("TurnKnob", "Turn the knob to point up."),
-    30: ("TurnKnob", "Turn the knob to point down."),
-    31: ("TurnKnob", "Turn the knob to point left."),
-    32: ("TurnKnob", "Turn the knob to point right."),
 
     # Flip Switch instructions
-    33: ("FlipSwitch", "Flip the top switch on with the left gripper."),
-    34: ("FlipSwitch", "Flip the top switch on with the right gripper."),
-    35: ("FlipSwitch", "Flip the top switch off with the left gripper."),
-    36: ("FlipSwitch", "Flip the top switch off with the right gripper."),
-    37: ("FlipSwitch", "Flip the bottom switch on with the left gripper."),
-    38: ("FlipSwitch", "Flip the bottom switch on with the right gripper."),
-    39: ("FlipSwitch", "Flip the bottom switch off with the left gripper."),
-    40: ("FlipSwitch", "Flip the bottom switch off with the right gripper."),
+    29: ("FlipSwitch", "Flip the top switch on with the left gripper."),
+    30: ("FlipSwitch", "Flip the top switch on with the right gripper."),
+    31: ("FlipSwitch", "Flip the top switch off with the left gripper."),
+    32: ("FlipSwitch", "Flip the top switch off with the right gripper."),
+    33: ("FlipSwitch", "Flip the bottom switch on with the left gripper."),
+    34: ("FlipSwitch", "Flip the bottom switch on with the right gripper."),
+    35: ("FlipSwitch", "Flip the bottom switch off with the left gripper."),
+    36: ("FlipSwitch", "Flip the bottom switch off with the right gripper."),
+}
 
+NON_TASKBOX_TASKS = {
     # Go to position instructions
     41: ("Reposition", "Return to the home position."),
     42: ("Reposition", "View the box from the top."),
