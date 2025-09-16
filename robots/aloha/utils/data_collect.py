@@ -18,7 +18,9 @@ def create_data_dict(
         action_timestamps,
         observations,
         observation_timestamps,
-        camera_names
+        camera_names,
+        busybox_states=None,
+        busybox_timestamps=None,
     ):
     """
     For each timestep:
@@ -34,6 +36,8 @@ def create_data_dict(
     action                  (14,)         'float64'
     """
 
+    # Core datasets used by downstream EpisodeWriter. We extend this with optional
+    # BusyBox instrumentation below without breaking existing consumers.
     data_dict = {
         '/observations/qpos': [],
         '/observations/qvel': [],
@@ -42,6 +46,10 @@ def create_data_dict(
         '/action': [],
         '/action_timestamp': [],
     }
+    # BusyBox optional instrumentation buffers (serialized later when writing HDF5)
+    if busybox_states is not None and busybox_timestamps is not None:
+        data_dict['/busybox/state_json'] = []  # JSON serialized snapshot per timestep
+        data_dict['/busybox/timestamp'] = []   # float timestamp aligned with observation
     for cam_name in camera_names:
         data_dict[f'/observations/images/{cam_name}'] = []
 
@@ -61,6 +69,19 @@ def create_data_dict(
             data_dict[f'/observations/images/{cam_name}'].append(
                 obs.observation['images'][cam_name]
             )
+        if busybox_states is not None and busybox_timestamps is not None:
+            # Pop front to stay consistent with action/obs consumption semantics.
+            # Each state is JSON-serialized later (variable length); we keep raw dict here.
+            state = busybox_states.pop(0)
+            state_ts = busybox_timestamps.pop(0)
+            # JSON dump each snapshot (ensure deterministic ordering by sort_keys)
+            try:
+                state_json = json.dumps(state, sort_keys=True)
+            except Exception:
+                # Fallback: repr if something is not JSON serializable
+                state_json = json.dumps({k: repr(v) for k, v in state.items()}, sort_keys=True)
+            data_dict['/busybox/state_json'].append(state_json)
+            data_dict['/busybox/timestamp'].append(state_ts)
     return data_dict
 
 class EpisodeWriter:
@@ -189,10 +210,19 @@ class EpisodeWriter:
                     grp_path = ''
                 full_path = ds_path
                 if full_path not in root:
-                    arr_np = np.asarray(array)
-                    root.create_dataset(full_path, data=arr_np, maxshape=arr_np.shape)
+                    # Special handling: busybox/state_json is a list of variable-length strings
+                    if full_path == 'busybox/state_json':
+                        dt = h5py.string_dtype(encoding='utf-8')
+                        root.create_dataset(full_path, (len(array),), dtype=dt)
+                        root[full_path][...] = array
+                    else:
+                        arr_np = np.asarray(array)
+                        root.create_dataset(full_path, data=arr_np, maxshape=arr_np.shape)
                 else:
-                    root[full_path][...] = array
+                    if full_path == 'busybox/state_json':
+                        root[full_path][...] = array
+                    else:
+                        root[full_path][...] = array
 
             if self.COMPRESS:
                 _ = root.create_dataset('compress_len', (len(self.camera_names), total_timesteps))
