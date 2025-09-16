@@ -9,7 +9,7 @@ COLLECTION_CONFIG = {
     'MQTT_port': 1883,
 }
 
-MQTT_TOPICS = {
+MQTT_SUBSCRIBE_TOPICS = {
     'buttons': 'busybox/buttons/state',
     'knob': 'busybox/knob/state',
     'sliders': 'busybox/sliders/state',

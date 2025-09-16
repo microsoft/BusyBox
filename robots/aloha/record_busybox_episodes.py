@@ -8,7 +8,7 @@ import time
 
 from robots.aloha.utils.config import COLLECTION_CONFIG
 if COLLECTION_CONFIG['using_instrumented_busybox']:
-    from robots.aloha.utils.config import MQTT_TOPICS
+    from robots.aloha.utils.config import MQTT_SUBSCRIBE_TOPICS
 
 from robots.aloha.utils.data_collect_ui import (
     DataCollectUI,
@@ -20,6 +20,8 @@ from robots.aloha.utils.data_collect_ui import (
 )
 from robots.aloha.utils.data_collect import EpisodeWriter, create_data_dict
 from robots.aloha.utils.robot_utils import opening_ceremony, bringup_robots
+from robots.aloha.utils.busybox_listener import BusyBoxListener
+from robots.aloha.utils.smart_task_selector import TaskSelectionHandler
 
 from aloha.real_env import get_action
 from aloha.constants import IS_MOBILE
@@ -30,14 +32,15 @@ DELAY_CONSTANT = 0.003
 
 # TODO(dean): consider moving this to robot_utils.py so I can remove aloha.real_env import
 def capture_episode_state_machine(
-        env,
-        ui,
-        leader_bot_left,
-        leader_bot_right,
-        task_info: tuple,
-        episode_writer: EpisodeWriter,
-        mqtt_client = None,
-    ):
+    env,
+    ui,
+    leader_bot_left,
+    leader_bot_right,
+    task_info: tuple,
+    episode_writer: EpisodeWriter,
+    task_selector: TaskSelectionHandler,
+    busybox_listener: BusyBoxListener | None = None,
+):
     _ = env.reset(fake=True)  # TODO(dean): is this needed?
     observations = []
     observation_timestamps = []
@@ -54,7 +57,12 @@ def capture_episode_state_machine(
     arm_state = ArmState.ACTIVE
     record_state = RecordState.IDLE
 
-    task_folder, task_instruction = task_info
+    # task_info expected: (task_type, task_instruction, task_edge_or_none)
+    if len(task_info) == 3:
+        task_folder, task_instruction, task_edge = task_info
+    else:  # backward compatibility (task_type, task_instruction)
+        task_folder, task_instruction = task_info
+        task_edge = None
 
     # Loop rate is DT only when recording. loop_partial enforces this
     in_loop = True
@@ -91,10 +99,18 @@ def capture_episode_state_machine(
                 print("[MIDDLE PEDAL] refreshing prompt")
                 record_state = RecordState.GET_NEW_TASK
         if record_state == RecordState.GET_NEW_TASK:
-            # TODO(dean): get new task instruction from task generator
-            import random
-            task_instruction = random.choice(["Refreshed task instruction", "New task instruction", "Another new task instruction"])
-            ui.paint_instructions(arm_state, task_instruction, record_state=record_state)
+            task_id, task_type, task_instruction, task_edge = get_next_task(task_selector)
+            
+            # Use task_type (sanitized) as folder label
+            task_folder = task_type.replace(':', '_')
+            task_info = (task_folder, task_instruction, task_edge)
+            print(f"[TaskSelection] id={task_id} type={task_type} edge={task_edge} -> {task_instruction}")
+
+            if not task_edge:
+                ui.paint_instructions(arm_state, task_instruction, record_state=None)
+            else:
+                print(type(task_edge))
+                ui.paint_instructions(arm_state, f"{task_instruction} + {task_edge}", record_state=None)
             record_state = RecordState.IDLE
         elif record_state == RecordState.RECORDING and not arm_state == ArmState.ACTIVE:
             print("Robot teleop has been DISABLED. Pausing recording.")
@@ -109,10 +125,10 @@ def capture_episode_state_machine(
             observation_timestamps.append(t1)
             actions.append(action)
             action_timestamps.append(t0)
-            if COLLECTION_CONFIG['using_instrumented_busybox'] and mqtt_client is not None:  # recording busybox!
+            if COLLECTION_CONFIG['using_instrumented_busybox'] and busybox_listener is not None:  # recording busybox!
                 # Capture a shallow copy of the latest BusyBox state right after obtaining obs/action timestamps.
                 # Each entry is a dict logical_topic -> parsed payload (JSON-decoded if possible)
-                busybox_states.append(mqtt_client.latest_state())
+                busybox_states.append(busybox_listener.latest_state())
                 busybox_timestamps.append(t1)  # align with observation timestamp
             # end actual data collection
             total_timesteps += 1
@@ -120,14 +136,10 @@ def capture_episode_state_machine(
 
             if key == MIDDLE_PEDAL and total_timesteps > 100:
                 print("[MIDDLE PEDAL] stopping recording")
-                record_state = RecordState.GET_NEW_TASK
                 ui.paint_instructions(arm_state, task_instruction, record_state=record_state)
                 print(f"Timesteps recorded: {total_timesteps}")
                 recorded_fps = total_timesteps / (time.time() - record_start_time)
                 print(f"Recorded FPS: {recorded_fps:.2f} (target: {FPS})")
-                if COLLECTION_CONFIG['using_instrumented_busybox']:
-                    # BusyBox data integration occurs by passing extra kwargs to create_data_dict (updated separately)
-                    pass
                 data_dict = create_data_dict(
                     actions,
                     action_timestamps,
@@ -137,6 +149,8 @@ def capture_episode_state_machine(
                     busybox_states=busybox_states if COLLECTION_CONFIG['using_instrumented_busybox'] else None,
                     busybox_timestamps=busybox_timestamps if COLLECTION_CONFIG['using_instrumented_busybox'] else None,
                 )
+                if task_edge is not None:
+                    data_dict['task_edge'] = task_edge  # (from_pos, to_pos)
                 episode_writer.write_episode(
                     data_dict,
                     task_instruction,
@@ -162,6 +176,19 @@ def capture_episode_state_machine(
             time.sleep(max(0, DT - loop_partial - DELAY_CONSTANT))  # maintain loop rate
 
 
+def get_next_task(task_selector: TaskSelectionHandler):
+    task_id, task_type, task_instruction = next(task_selector)
+    edges = task_selector.last_special_edges()
+    # Determine edge if applicable
+    task_edge = None
+    if task_type == 'TurnKnob':
+        task_edge = edges.get('TurnKnob')
+    elif task_type.startswith('MoveSlider:Top'):
+        task_edge = edges.get('MoveSlider:Top')
+    elif task_type.startswith('MoveSlider:Bottom'):
+        task_edge = edges.get('MoveSlider:Bottom')
+    return task_id, task_type, task_instruction, task_edge
+
 
 def main(config):
     # create session folder where episodes will be stored
@@ -173,7 +200,7 @@ def main(config):
     # create instruction UI
     ui = DataCollectUI()
     ui.create_window()
-    ui.paint_instructions("ENABLED", "I am just getting started", record_state=None)
+    ui.paint_instructions("ENABLED", "Booting up...", record_state=None)
     key = ui.get_key()
 
     # create task generator
@@ -181,15 +208,17 @@ def main(config):
 
     _, leader_bot_left, leader_bot_right, env = bringup_robots()
     episode_writer = EpisodeWriter(session_dir, config['camera_names'])
+    # Initialize task selector (persistent across episodes)
+    task_selector = TaskSelectionHandler()
 
     if COLLECTION_CONFIG['using_instrumented_busybox']:
-            # Later: integrate mqtt_client.latest_state()/history into data_dict.
-            mqtt_client = MqttClient(
+            # Later: integrate busybox_listener.latest_state()/history into data_dict.
+            busybox_listener = BusyBoxListener(
                 broker=COLLECTION_CONFIG['MQTT_broker'],
                 port=COLLECTION_CONFIG['MQTT_port'],
-                topics=MQTT_TOPICS,
+                topics=MQTT_SUBSCRIBE_TOPICS,
             )
-            mqtt_client.start()
+            busybox_listener.start()
 
     try:
         while True:
@@ -200,9 +229,19 @@ def main(config):
                 env.follower_bot_right,
             )
             
-            # TODO(dean): get task from task generator Andrey built
-            import random
-            task_info = ("task_type", random.choice(["Example Task Instruction", "FIRST Another Example Task Instruction"]))
+            # Sample next task using TaskSelectionHandler
+            task_id, task_type, task_instruction, task_edge = get_next_task(task_selector)
+
+            # Use task_type (sanitized) as folder label
+            safe_task_type = task_type.replace(':', '_')
+            task_info = (safe_task_type, task_instruction, task_edge)
+            print(f"[TaskSelection] id={task_id} type={task_type} edge={task_edge} -> {task_instruction}")
+
+            if not task_edge:
+                ui.paint_instructions("ENABLED", task_instruction, record_state=None)
+            else:
+                print(type(task_edge))
+                ui.paint_instructions("ENABLED", f"{task_instruction} + {task_edge}", record_state=None)
 
             capture_episode_state_machine(
                 env,
@@ -211,148 +250,16 @@ def main(config):
                 leader_bot_right,
                 task_info,
                 episode_writer,
-                mqtt_client if COLLECTION_CONFIG['using_instrumented_busybox'] else None
+                task_selector,
+                busybox_listener if COLLECTION_CONFIG['using_instrumented_busybox'] else None
             )
 
     except KeyboardInterrupt:
         print("Session interrupted by user.")
     finally:
         print("Cleaning up and closing session.")
-        mqtt_client.stop() if COLLECTION_CONFIG['using_instrumented_busybox'] else None
+        busybox_listener.stop() if COLLECTION_CONFIG['using_instrumented_busybox'] else None
         # ui.close_window()  # Example: close out things, cleanup
-
-
-class MqttClient:
-    """Lightweight wrapper around paho-mqtt for BusyBox instrumentation.
-
-    Responsibilities:
-    - Connect to broker defined in `COLLECTION_CONFIG`.
-    - Subscribe to all topics in `MQTT_TOPICS`.
-    - Thread-safe buffering of most recent message per topic and an
-      append-only history (with optional max length) to allow episode
-      integration later.
-    - Non-blocking network loop management (start/stop).
-
-    Access patterns:
-      latest = client.latest_state()  # dict topic_key -> parsed payload
-      history = client.history['buttons']  # list of (timestamp, payload)
-
-    Notes:
-    - Payloads are expected to be UTF-8 JSON or simple scalars. We try JSON
-      decode first, then fallback to raw text. If bytes cannot decode, store repr.
-    - Designed so we can later merge the buffered data into the episode dict
-      inside `capture_episode_state_machine` when TODOs are addressed.
-    """
-
-    def __init__(self, broker: str, port: int, topics: dict, max_history: int | None = 10_000):
-        self.broker = broker
-        self.port = port
-        self.topics = topics  # mapping logical_name -> mqtt/topic
-        self.max_history = max_history
-        self._connected = False
-        self._client = None
-        self._lock = None  # lazy import threading only if used
-        self.latest = {k: None for k in self.topics.keys()}
-        # history: logical_name -> list[(t, payload_dict_or_value)]
-        self.history = {k: [] for k in self.topics.keys()}
-
-    # ------------------------ Public API ------------------------
-    def start(self):
-        """Create client, connect, subscribe, and start loop in background."""
-        try:
-            import threading
-            import paho.mqtt.client as mqtt
-        except ImportError as e:
-            raise RuntimeError("paho-mqtt not installed. Add to requirements and pip install.") from e
-
-        if self._client is not None:
-            return  # already started
-        self._lock = threading.RLock()
-        self._client = mqtt.Client()
-        self._client.on_connect = self._on_connect
-        self._client.on_message = self._on_message
-        # Optional: faster reconnect attempts
-        self._client.reconnect_delay_set(min_delay=1, max_delay=8)
-        try:
-            self._client.connect(self.broker, self.port, keepalive=30)
-        except Exception as e:
-            print(f"[MQTT] Connection error to {self.broker}:{self.port} -> {e}")
-            self._client = None
-            return
-        # start network loop thread
-        self._client.loop_start()
-
-    def stop(self):
-        if self._client is None:
-            return
-        try:
-            self._client.loop_stop()
-            self._client.disconnect()
-        finally:
-            self._client = None
-            self._connected = False
-
-    def latest_state(self):
-        with (self._lock or _NullContext()):
-            # return a shallow copy to avoid outside mutation
-            return dict(self.latest)
-
-    # ---------------------- Internal Callbacks ------------------
-    def _on_connect(self, client, userdata, flags, rc):  # noqa: D401
-        if rc == 0:
-            self._connected = True
-            print("[MQTT] Connected to broker.")
-            # Subscribe to each topic
-            for logical, topic in self.topics.items():
-                try:
-                    client.subscribe(topic, qos=0)
-                    print(f"[MQTT] Subscribed: {logical} -> {topic}")
-                except Exception as e:
-                    print(f"[MQTT] Failed to subscribe {topic}: {e}")
-        else:
-            print(f"[MQTT] Connection failed with code {rc}")
-
-    def _on_message(self, client, userdata, msg):
-        import json, time as _time
-        payload = msg.payload
-        try:
-            text = payload.decode('utf-8')
-        except Exception:
-            text = repr(payload)
-        # attempt JSON parse
-        parsed = None
-        if text:
-            try:
-                parsed = json.loads(text)
-            except Exception:
-                parsed = text  # keep raw
-        logical = self._logical_from_topic(msg.topic)
-        if logical is None:
-            return  # not one of ours
-        ts = _time.time()
-        with (self._lock or _NullContext()):
-            self.latest[logical] = parsed
-            hist = self.history[logical]
-            hist.append((ts, parsed))
-            if self.max_history is not None and len(hist) > self.max_history:
-                # drop oldest (O(n)); for large, consider deque - premature for now
-                hist.pop(0)
-
-    # -------------------------- Helpers -------------------------
-    def _logical_from_topic(self, topic: str):
-        for logical, t in self.topics.items():
-            if t == topic:
-                return logical
-        return None
-
-
-class _NullContext:
-    """Fallback context manager used before threading lock is set."""
-    def __enter__(self):
-        return self
-    def __exit__(self, exc_type, exc, tb):
-        return False
-
 
 
 if __name__ == "__main__":
