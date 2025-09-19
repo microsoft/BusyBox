@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="BusyBox is a modular, electronics-rich manipulation benchmark for studying affordance generalization beyond pick-and-place.">
+  <meta name="keywords" content="BusyBox, robotics, affordance, manipulation, generalization, benchmark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusyBox: Benchmarking Affordance Generalization</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <!-- Removed bulma-carousel.min.css & bulma-slider.min.css (unused after template cleanup) -->
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <!-- Removed bulma-carousel.min.js & bulma-slider.min.js (unused) -->
+  <script src="./static/js/index.js?v=2"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNav">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="mainNav" class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="#hero">Home</a>
+      <a class="navbar-item" href="#overview">Overview</a>
+      <a class="navbar-item" href="#hardware">Hardware</a>
+      <a class="navbar-item" href="#benchmark">Benchmark</a>
+      <a class="navbar-item" href="#results">Results</a>
+      <a class="navbar-item" href="#assembly">Assembly</a>
+      <a class="navbar-item" href="#teleoperation">Teleoperation</a>
+      <a class="navbar-item" href="#evaluation">Evaluation</a>
+      <a class="navbar-item" href="#resources">Resources</a>
+      <a class="navbar-item" href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+
+<section class="hero" id="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-1 publication-title">BusyBox: Benchmarking Affordance Generalization</h1>
+      <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular, electronics-rich manipulation benchmark to test affordance generalization beyond simple pick-and-place.</p>
+      <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+        <span class="author-block"><a href="https://www.linkedin.com/in/deanfortier/">Dean Fortier</a>,</span>
+        <span class="author-block"><a href="https://scholar.google.com/citations?user=-NVFbtsAAAAJ&hl=en&oi=ao">Timothy Adamson</a>,</span>
+        <span class="author-block"><a href="https://tesshellebrekers.com/">Tess Hellebrekers</a>,</span>
+        <span class="author-block"><a href="https://www.linkedin.com/in/teresa-lascala-046130b8/">Teresa LaScala</a>,</span>
+        <span class="author-block"><a href="https://www.linkedin.com/in/kofi-ennin-a8443024a/">Kofi Ennin</a>,</span>
+        <span class="author-block"><a href="https://www.mmurray.com/">Michael Murray</a>,</span>
+        <span class="author-block"><a href="https://www.microsoft.com/en-us/research/people/akolobov/">Andrey Kolobov</a>,</span>
+        <span class="author-block"><a href="https://www.linkedin.com/in/galen-mullins-b077a66a/">Galen Mullins</a></span>
+      </div>
+      <div class="buttons is-centered" style="margin-top:1.25rem;">
+        <a class="button is-primary" href="https://openreview.net/pdf?id=Pa7DG5Vxnt" target="_blank" rel="noopener">Paper (PDF)</a>
+        <a class="button is-primary" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code (Coming Soon)</a>
+        <a class="button is-primary is-light" disabled>Dataset (coming soon)</a>
+      </div>
+      <p class="is-size-6" style="margin-top:0.75rem; color:#666;">[PLACEHOLDER: N task families · M configurations · K interaction types]</p>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser montage reserved for future insertion -->
+
+<section class="section" id="overview">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Overview</h2>
+    <div class="content has-text-justified">
+      <p>[PLACEHOLDER: Motivation paragraph summarizing gap in affordance generalization for electronic/mechanical interactions compared to conventional manipulation.]</p>
+      <p>[PLACEHOLDER: Concise abstract extracted from paper—will replace with final text.]</p>
+    </div>
+    <h3 class="title is-5">Contributions</h3>
+    <ul>
+      <li>Introduce BusyBox, a reconfigurable manipulation console with modular electronic and mechanical components enabling combinatorial task generation.</li>
+      <li>Define an affordance generalization benchmark: train on a subset of configurations/tasks and evaluate on unseen panel layouts and interaction types.</li>
+      <li>Provide a teleoperated demonstration dataset covering diverse electronic interaction primitives. [PLACEHOLDER: add counts]</li>
+      <li>Establish standardized evaluation metrics (success rate, first-attempt activation, unseen configuration generalization).</li>
+      <li>Benchmark state-of-the-art VLAs: strong on pick & place / wiping but failure-prone on multi-step electronic affordances.</li>
+      <li>Release (planned) hardware design files, dataset, and evaluation protocol to spur research in affordance-centric generalization.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="hardware">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">BusyBox Hardware</h2>
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <figure class="image">
+          <img src="./BusyBox_assets/taskbox_disasembled.png" alt="Disassembled BusyBox modular hardware" />
+        </figure>
+      </div>
+      <div class="column is-half">
+        <div class="content">
+          <p>[PLACEHOLDER: Description of modular panels, electronic components (buttons, switches, dials, connectors), mounting frame, reconfiguration speed.]</p>
+          <p>[PLACEHOLDER: Rationale: enabling systematic variation & compositional affordance evaluation.]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="benchmark">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Benchmark Design</h2>
+    <div class="content has-text-justified">
+      <p>[PLACEHOLDER: Explanation of task families, train/test splits, unseen configuration protocol.]</p>
+    </div>
+    <h3 class="title is-5">Task Families</h3>
+    <ul>
+      <li>Activation tasks (press, toggle, rotate)</li>
+      <li>Sequential electronic interactions [PLACEHOLDER]</li>
+      <li>Connection / insertion tasks [PLACEHOLDER]</li>
+      <li>Composite multi-step affordances [PLACEHOLDER]</li>
+    </ul>
+    <h3 class="title is-5">Evaluation Metrics</h3>
+    <ul>
+      <li>Task Success Rate (%)</li>
+      <li>Generalization Gap (Seen vs Unseen configurations)</li>
+      <li>First-Try Activation Rate</li>
+      <li>Action Efficiency (steps vs expert) [OPTIONAL]</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Results</h2>
+    <p class="has-text-weight-semibold" style="margin-top:1rem;">Headline Finding</p>
+    <p>Despite high success on conventional pick-and-place and surface wiping, leading VLAs still fail frequently on BusyBox’s electronic interaction tasks, revealing a substantial generalization gap in affordance understanding.</p>
+    <h3 class="title is-5" style="margin-top:2rem;">Quantitative (Placeholder)</h3>
+    <div class="table-container">
+      <table class="table is-striped is-hoverable is-fullwidth is-narrow">
+        <thead>
+          <tr>
+            <th>Task Family</th>
+            <th>Seen Success (%)</th>
+            <th>Unseen Success (%)</th>
+            <th>Gap (pp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Activation</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
+          <tr><td>Sequential</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
+          <tr><td>Connection</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
+          <tr><td>Composite</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="is-size-7">[PLACEHOLDER: Define how gap is computed.]</p>
+    <h3 class="title is-5" style="margin-top:2rem;">Qualitative Examples</h3>
+    <p>[PLACEHOLDER: Add failure/success montage thumbnails / future carousel.]</p>
+  </div>
+</section>
+
+<section class="section" id="assembly">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Assembly</h2>
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <video class="busybox-video" autoplay muted loop playsinline controls>
+          <source src="./BusyBox_assets/assembling_busybox_no_audio.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="column is-half">
+        <p>[PLACEHOLDER: Caption describing assembly process & modular swap time.]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="teleoperation">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Teleoperation Data Collection</h2>
+    <div class="columns is-vcentered">
+      <div class="column is-half order-2">
+        <video class="busybox-video" autoplay muted loop playsinline controls>
+          <source src="./BusyBox_assets/teleoperate_on_busybox_no_audio.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="column is-half order-1">
+        <p>[PLACEHOLDER: Caption explaining teleop interface, annotation method, demonstration coverage.]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="evaluation">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Model Evaluation</h2>
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <video class="busybox-video" autoplay muted loop playsinline controls>
+          <source src="./BusyBox_assets/model_evaluation_on_BusyBox.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="column is-half">
+        <p>[PLACEHOLDER: Caption highlighting representative failure modes (e.g., misidentifying switch state, incomplete activation) and successes.]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="resources">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Resources</h2>
+    <div class="buttons">
+      <a class="button is-link" href="https://openreview.net/pdf?id=Pa7DG5Vxnt" target="_blank" rel="noopener">Paper PDF</a>
+      <a class="button is-link" disabled>arXiv (soon)</a>
+      <a class="button is-link" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code Repo</a>
+      <a class="button is-link" disabled>Dataset (soon)</a>
+      <a class="button is-link" disabled>Hardware CAD (soon)</a>
+    </div>
+    <p class="is-size-7" style="margin-top:1rem;">Contact: [PLACEHOLDER: email]</p>
+  </div>
+</section>
+
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{busybox2025,
+  title={BusyBox: Benchmarking Affordance Generalization},
+  author={Fortier, Dean and Adamson, Timothy and Others},
+  booktitle={Proceedings of [PLACEHOLDER: Conference]},
+  year={2025},
+  note={Placeholder entry; update upon acceptance}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p class="is-size-7">© 2025 BusyBox Project. [PLACEHOLDER: License]</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.querySelector('.navbar-burger');
+  const target = document.getElementById('mainNav');
+  if (burger && target) {
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('is-active');
+      target.classList.toggle('is-active');
+    });
+  }
+});
+</script>
+
+</body>
+</html>
