@@ -26,7 +26,6 @@
         rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <!-- Removed bulma-carousel.min.css & bulma-slider.min.css (unused after template cleanup) -->
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
@@ -96,8 +95,8 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Overview</h2>
     <div class="content has-text-justified">
-      <p>[PLACEHOLDER: Motivation paragraph summarizing gap in affordance generalization for electronic/mechanical interactions compared to conventional manipulation.]</p>
-      <p>[PLACEHOLDER: Concise abstract extracted from paper—will replace with final text.]</p>
+      <p>While Robot Foundation Models (RFMs) have shown impressive progress in generalizing across vision and language spaces, they still struggle with a critical capability: <strong>affordance generalization</strong> – the ability to manipulate new objects with familiar physical features. Basic interface elements like buttons and switches are designed to look and function similarly across different objects to facilitate this generalization for humans, yet current RFMs fail to achieve this basic level of understanding.</p>
+      <p>BusyBox addresses this gap by providing a systematic benchmark for evaluating how well RFMs can transfer their understanding of basic affordances (pressing buttons, flipping switches, turning knobs) to new configurations. Our experiments show that even state-of-the-art models like π0 completely fail at this seemingly simple task, highlighting a major area for improvement in robotic manipulation.</p>
     </div>
     <h3 class="title is-5">Contributions</h3>
     <ul>
@@ -122,8 +121,16 @@
       </div>
       <div class="column is-half">
         <div class="content">
-          <p>[PLACEHOLDER: Description of modular panels, electronic components (buttons, switches, dials, connectors), mounting frame, reconfiguration speed.]</p>
-          <p>[PLACEHOLDER: Rationale: enabling systematic variation & compositional affordance evaluation.]</p>
+          <p>BusyBox consists of six 3D-printable modules that can be easily swapped and rotated to create multiple configurations with the same set of affordances:</p>
+          <ul>
+            <li><strong>Display Module:</strong> E Ink display with LED indicators and main electronics</li>
+            <li><strong>Buttons Module:</strong> Four colored, illuminated buttons</li>
+            <li><strong>Sliders Module:</strong> Two sliders adjustable between positions 1-5</li>
+            <li><strong>Knob Module:</strong> Rotatable knob with 6 positions and handle</li>
+            <li><strong>Switches Module:</strong> Left and right switches with on/off positions</li>
+            <li><strong>Wire Module:</strong> Colored wires with pluggable connectors</li>
+          </ul>
+          <p>The modular design enables rapid reconfiguration using snap connectors, allowing researchers to systematically vary the spatial layout while maintaining consistent affordances. The entire assembly weighs under 750g per arm payload, compatible with standard bimanual manipulators like Mobile ALOHA.</p>
         </div>
       </div>
     </div>
@@ -134,21 +141,24 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Benchmark Design</h2>
     <div class="content has-text-justified">
-      <p>[PLACEHOLDER: Explanation of task families, train/test splits, unseen configuration protocol.]</p>
+      <p>The BusyBox benchmark evaluates affordance generalization by training models on a canonical configuration and testing their ability to perform the same tasks on reconfigured BusyBox instances. This tests whether models truly understand the affordances or merely memorize spatial positions.</p>
     </div>
     <h3 class="title is-5">Task Families</h3>
     <ul>
-      <li>Activation tasks (press, toggle, rotate)</li>
-      <li>Sequential electronic interactions [PLACEHOLDER]</li>
-      <li>Connection / insertion tasks [PLACEHOLDER]</li>
-      <li>Composite multi-step affordances [PLACEHOLDER]</li>
+      <li><strong>Button Tasks:</strong> Press colored buttons (by color or position reference)</li>
+      <li><strong>Slider Tasks:</strong> Move sliders to specific positions (1-5)</li>
+      <li><strong>Knob Tasks:</strong> Rotate knob to positions (1-6) or directions</li>
+      <li><strong>Switch Tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
+      <li><strong>Wire Pull Tasks:</strong> Pull out specific colored wires</li>
+      <li><strong>Wire Insert Tasks:</strong> Insert wires into terminals</li>
+      <li><strong>BusyBox Manipulation:</strong> Rotate or move the entire BusyBox</li>
     </ul>
     <h3 class="title is-5">Evaluation Metrics</h3>
     <ul>
-      <li>Task Success Rate (%)</li>
-      <li>Generalization Gap (Seen vs Unseen configurations)</li>
-      <li>First-Try Activation Rate</li>
-      <li>Action Efficiency (steps vs expert) [OPTIONAL]</li>
+      <li><strong>Task Success Rate (%):</strong> Percentage of successfully completed tasks</li>
+      <li><strong>Generalization Gap:</strong> Difference between performance on seen vs unseen configurations</li>
+      <li><strong>First-Try Activation Rate:</strong> Success rate on initial attempt without corrections</li>
+      <li><strong>Configuration Transfer:</strong> Zero-shot performance on novel module arrangements</li>
     </ul>
   </div>
 </section>
@@ -156,30 +166,46 @@
 <section class="section" id="results">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Results</h2>
-    <p class="has-text-weight-semibold" style="margin-top:1rem;">Headline Finding</p>
-    <p>Despite high success on conventional pick-and-place and surface wiping, leading VLAs still fail frequently on BusyBox’s electronic interaction tasks, revealing a substantial generalization gap in affordance understanding.</p>
-    <h3 class="title is-5" style="margin-top:2rem;">Quantitative (Placeholder)</h3>
+    <p class="has-text-weight-semibold" style="margin-top:1rem;">Current Robot Foundation Models Fail at Affordance Generalization</p>
+    <p>Despite high success on conventional pick-and-place tasks, leading VLAs completely fail at BusyBox's affordance generalization challenge. Even after finetuning on our dataset, π0 achieves only 30% success on the training configuration and 0% on novel configurations.</p>
+    <h3 class="title is-5" style="margin-top:2rem;">Quantitative Results</h3>
     <div class="table-container">
       <table class="table is-striped is-hoverable is-fullwidth is-narrow">
         <thead>
           <tr>
-            <th>Task Family</th>
-            <th>Seen Success (%)</th>
-            <th>Unseen Success (%)</th>
-            <th>Gap (pp)</th>
+            <th>Model Configuration</th>
+            <th>Canonical Success (%)</th>
+            <th>Config-1 Success (%)</th>
+            <th>Config-2 Success (%)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Activation</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
-          <tr><td>Sequential</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
-          <tr><td>Connection</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
-          <tr><td>Composite</td><td>[--]</td><td>[--]</td><td>[--]</td></tr>
+          <tr><td>π0 Zero-shot</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+          <tr><td>π0 Finetuned</td><td>30.0</td><td>0.0</td><td>0.0</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="is-size-7">[PLACEHOLDER: Define how gap is computed.]</p>
-    <h3 class="title is-5" style="margin-top:2rem;">Qualitative Examples</h3>
-    <p>[PLACEHOLDER: Add failure/success montage thumbnails / future carousel.]</p>
+    <h3 class="title is-5" style="margin-top:1.5rem;">Performance by Task Type (π0 Finetuned on Canonical)</h3>
+    <div class="table-container">
+      <table class="table is-striped is-hoverable is-fullwidth is-narrow">
+        <thead>
+          <tr>
+            <th>Task Type</th>
+            <th>Success Rate (%)</th>
+            <th>Key Failure Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Turn Knob</td><td>50.0</td><td>Overshooting target position</td></tr>
+          <tr><td>Pull Wire</td><td>40.0</td><td>Insufficient grip/force</td></tr>
+          <tr><td>Push Button</td><td>40.0</td><td>Missing button location</td></tr>
+          <tr><td>Move Slider</td><td>30.0</td><td>Imprecise positioning</td></tr>
+          <tr><td>Flip Switch</td><td>20.0</td><td>Lack of bimanual coordination</td></tr>
+          <tr><td>Insert Wire</td><td>0.0</td><td>Failed alignment/insertion</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="is-size-7" style="margin-top:0.5rem;">Note: The finetuned model's failures on non-canonical configurations were primarily due to reaching for wrong module positions, indicating memorization rather than affordance understanding.</p>
   </div>
 </section>
 
@@ -193,7 +219,7 @@
         </video>
       </div>
       <div class="column is-half">
-        <p>[PLACEHOLDER: Caption describing assembly process & modular swap time.]</p>
+        <p>BusyBox's modular design enables rapid reconfiguration through snap connectors. Modules can be swapped and rotated in under 2 minutes, allowing researchers to quickly create new test configurations. The 3D-printed components are designed for easy replication in any robotics lab with access to a standard 3D printer. Two-filament printing enhances visibility of position markers, though single-color prints with manual highlighting work as an alternative.</p>
       </div>
     </div>
   </div>
@@ -209,7 +235,14 @@
         </video>
       </div>
       <div class="column is-half order-1">
-        <p>[PLACEHOLDER: Caption explaining teleop interface, annotation method, demonstration coverage.]</p>
+        <p>We collected 1,042 demonstrations (~4.8 hours) using Mobile ALOHA teleoperation on the canonical BusyBox configuration. The dataset covers all seven task families with systematic variation in:</p>
+        <ul>
+          <li>Initial states (slider/knob positions, switch states)</li>
+          <li>BusyBox position and orientation</li>
+          <li>Language instruction variants (color vs position references)</li>
+          <li>Robot starting poses</li>
+        </ul>
+        <p>Teleoperators followed strict protocols for consistency: efficient movements (15s for most tasks, 45s for wire insertion), active demonstration without unnecessary pauses, and ensuring wrist camera visibility of task-relevant areas.</p>
       </div>
     </div>
   </div>
@@ -236,12 +269,13 @@
     <h2 class="title is-3">Resources</h2>
     <div class="buttons">
       <a class="button is-link" href="https://openreview.net/pdf?id=Pa7DG5Vxnt" target="_blank" rel="noopener">Paper PDF</a>
-      <a class="button is-link" disabled>arXiv (soon)</a>
-      <a class="button is-link" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code Repo</a>
-      <a class="button is-link" disabled>Dataset (soon)</a>
-      <a class="button is-link" disabled>Hardware CAD (soon)</a>
+      <a class="button is-link" disabled>arXiv (coming soon)</a>
+      <a class="button is-link" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code Repository</a>
+      <a class="button is-link" disabled>Dataset (coming soon)</a>
+      <a class="button is-link" disabled>Hardware CAD Files (coming soon)</a>
+      <a class="button is-link" disabled>Electronics BOM (coming soon)</a>
     </div>
-    <p class="is-size-7" style="margin-top:1rem;">Contact: [PLACEHOLDER: email]</p>
+    <p class="is-size-7" style="margin-top:1rem;">For questions or collaboration inquiries, please visit our GitHub repository.</p>
   </div>
 </section>
 
@@ -250,10 +284,10 @@
     <h2 class="title">BibTeX</h2>
     <pre><code>@inproceedings{busybox2025,
   title={BusyBox: Benchmarking Affordance Generalization},
-  author={Fortier, Dean and Adamson, Timothy and Others},
-  booktitle={Proceedings of [PLACEHOLDER: Conference]},
+  author={Fortier, Dean and Adamson, Timothy and Hellebrekers, Tess and LaScala, Teresa and Ennin, Kofi and Murray, Michael and Kolobov, Andrey and Mullins, Galen},
+  booktitle={Eval\&Deploy@CoRL2025: Evaluation and Deployment Across the Robot Learning Lifecycle},
   year={2025},
-  note={Placeholder entry; update upon acceptance}
+  note={Workshop at the 9th Conference on Robot Learning (CoRL 2025)}
 }</code></pre>
   </div>
 </section>
@@ -262,7 +296,8 @@
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <p class="is-size-7">© 2025 BusyBox Project. [PLACEHOLDER: License]</p>
+      <p class="is-size-7">© 2025 BusyBox Project. Released under MIT License.</p>
+      <p class="is-size-7">Website template adapted from <a href="https://nerfies.github.io" target="_blank">Nerfies</a></p>
     </div>
   </div>
 </footer>
