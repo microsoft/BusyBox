@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-    content="BusyBox is a modular, electronics-rich manipulation benchmark for studying affordance generalization beyond pick-and-place.">
-  <meta name="keywords" content="BusyBox, robotics, affordance, manipulation, generalization, benchmark">
+    content="Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models.">
+  <meta name="keywords" content="BusyBox, robotics, affordance, manipulation, generalization, benchmark, robot foundation model, VLA">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Benchmarking Affordance Generalization with BusyBox</title>
 
@@ -67,7 +67,7 @@
   <div class="hero-body">
     <div class="container is-max-desktop has-text-centered">
       <h1 class="title is-1 publication-title">Benchmarking Affordance Generalization with BusyBox</h1>
-      <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models (RFMs).</p>
+      <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models.</p>
       <div class="is-size-6 publication-authors" style="margin-top:1rem;">
         <span class="author-block"><a href="https://www.linkedin.com/in/deanfortier/">Dean Fortier</a>,</span>
         <span class="author-block"><a href="https://scholar.google.com/citations?user=-NVFbtsAAAAJ&hl=en&oi=ao">Timothy Adamson</a>,</span>
@@ -99,17 +99,17 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Overview</h2>
     <div class="content has-text-justified">
-      <p>Robot Foundation Models (RFMs) have been attracting researchers and practitioners with a promise of generalizing robot behaviors across tasks, objects, and environments. RFMs' generalization capabilities in the vision and language space have been studied extensively. However, <strong>affordance generalization</strong> – RFMs' ability to manipulate new objects with familiar physical features - remains largely unexplored. 
-        In the meantime, this meta-skill is plays a critical rule in a person's ability to quickly figure out how to manipulate an unfamiliar object. In fact, basic physical interface elements like buttons and switches are designed to look and function similarly across different objects to facilitate affordance generalization in environments inhabited by people. </p>
-      <p>BusyBox fills this gap by providing a physical benchmark for systematically evaluating how well RFMs can transfer their understanding of basic affordances (pressing buttons, flipping switches, turning knobs, etc) to new objects. Our experiments show that even state-of-the-art models like π0 completely fail at this seemingly simple task, highlighting a major area for improvement in robotic manipulation.</p>
+      <p>Robot Foundation Models (RFMs), also referred to as Vision-Language Action models (VLAs), have been attracting the attention of researchers and practitioners with a promise of generalizing robot behaviors across tasks, objects, and environments. The community has extensively studied RFMs' generalization capabilities in the vision and language space. However, <strong>affordance generalization</strong> – RFMs' ability to manipulate new objects with familiar physical features - remains largely unexplored. 
+        In the meantime, this meta-skill is plays a critical rule in a person's ability to quickly figure out how to handle hitherto unseen objects. In fact, basic physical interface elements like buttons and switches are designed to look and function similarly across different devices to facilitate affordance generalization in environments inhabited by people. Whether robots can capitalize on these design aids remains unknown: researchers currently lack a benchmark for systematically studing affordance generalization in RFMs. </p>
+      <p>BusyBox is a physical 3D-printable kit for systematically evaluating how well RFMs generalize their knowledge of basic affordances (pressing buttons, flipping switches, turning knobs, etc). BusyBox can be assembled into any of a multitude of distinct objects having the same set of affordances. Paired with a carefully design protocols for experiments and data collection that we present in this work, BusyBox can provide valuable insights into RFMs' ability to recognize and exploit ubiquitous classes of affordances. In our experiments, BusyBox hightlights affordance generalization as a major improvement area for RFMs. </p>
     </div>
     <h3 class="title is-5">Contributions</h3>
     <ul>
       <li><strong>BusyBox and CAD files for 3D-printing it:</strong> BusyBox is set of 6 swappable 3D-printable modules with switches, sliders, wires, buttons, a display, and a dial for systematic evaluation of RFMs' affordance generalization.</li>
-      <li><strong>Dataset of demonstrations:</strong> 1000+ language-annotated demonstration trajectories collected by teleoperating a Mobile ALOHA robot, covering 7 affordance/task families with systematic state randomization.</li>
-      <li><strong>Experiment protocol:</strong> A methodology for assessing whether models truly understand affordances or merely memorize spatial positions, using module reconfiguration to test zero-shot transfer.</li>
+      <li><strong>Dataset of demonstrations:</strong> 1000+ language-annotated demonstration trajectories collected by teleoperating a Mobile ALOHA robot, covering 7 affordance/task families with systematic initial state randomization.</li>
+      <li><strong>Experiment protocol:</strong> A methodology for assessing whether RFMs learn generalizable affordances or merely memorize spatial positions of various UI control elements.</li>
       <!-- <li><strong>Instrumented Evaluation:</strong> Electronics design enabling automated task completion detection via 10Hz state logging, supporting semi-automatic evaluation of multi-step tasks.</li> -->
-      <li><strong>Baseline results:</strong> Empirical evidence that even state-of-the-art models fail at basic affordance generalization (π0: 30% on trained configuration, 0% on novel arrangements).</li>
+      <li><strong>Baseline results:</strong> Empirical evidence showing that even state-of-the-art models such as π0 currently struggle with affordance generalization.</li>
       <!-- <li><strong>Open-Source Release:</strong> CAD files for 3D printing, bill of materials for electronics, data collection protocols, and evaluation scripts to facilitate reproducible research.</li> -->
     </ul>
   </div>
@@ -223,6 +223,7 @@
   </div>
 </section>
 
+<!--
 <section class="section" id="teleoperation">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Teleoperation Data Collection</h2>
@@ -247,6 +248,7 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- <section class="section" id="evaluation">
   <div class="container is-max-desktop">
@@ -265,6 +267,7 @@
   </div>
 </section> -->
 
+<!--
 <section class="section" id="resources">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Resources</h2>
@@ -279,11 +282,12 @@
     <p class="is-size-7" style="margin-top:1rem;">For questions or collaboration inquiries, please visit our GitHub repository.</p>
   </div>
 </section>
+-->
 
 <section class="section" id="bibtex">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{busybox2025,
+    <pre><code>@misc{busybox2025,
   title={Benchmarking Affordance Generalization with BusyBox},
   author={Fortier, Dean and Adamson, Timothy and Hellebrekers, Tess and LaScala, Teresa and Ennin, Kofi and Murray, Michael and Kolobov, Andrey and Mullins, Galen},
   booktitle={Eval\&Deploy Workshop at CoRL-2025: Evaluation and Deployment Across the Robot Learning Lifecycle},
