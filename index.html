@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="description"
-    content="BusyBox is a modular, electronics-rich manipulation benchmark for studying affordance generalization beyond pick-and-place.">
-  <meta name="keywords" content="BusyBox, robotics, affordance, manipulation, generalization, benchmark">
+    content="Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models.">
+  <meta name="keywords" content="BusyBox, robotics, affordance, manipulation, generalization, benchmark, robot foundation model, VLA">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BusyBox: Benchmarking Affordance Generalization</title>
+  <title>Benchmarking Affordance Generalization with BusyBox</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
@@ -66,8 +66,8 @@
 <section class="hero" id="hero">
   <div class="hero-body">
     <div class="container is-max-desktop has-text-centered">
-      <h1 class="title is-1 publication-title">BusyBox: Benchmarking Affordance Generalization</h1>
-      <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular, electronics-rich manipulation benchmark to test affordance generalization beyond simple pick-and-place.</p>
+      <h1 class="title is-1 publication-title">Benchmarking Affordance Generalization with BusyBox</h1>
+      <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models.</p>
       <div class="is-size-6 publication-authors" style="margin-top:1rem;">
         <span class="author-block"><a href="https://www.linkedin.com/in/deanfortier/">Dean Fortier</a>,</span>
         <span class="author-block"><a href="https://scholar.google.com/citations?user=-NVFbtsAAAAJ&hl=en&oi=ao">Timothy Adamson</a>,</span>
@@ -79,11 +79,10 @@
         <span class="author-block"><a href="https://www.linkedin.com/in/galen-mullins-b077a66a/">Galen Mullins</a></span>
       </div>
       <div class="buttons is-centered" style="margin-top:1.25rem;">
-        <a class="button is-primary" href="https://openreview.net/pdf?id=Pa7DG5Vxnt" target="_blank" rel="noopener">Paper (PDF)</a>
-        <a class="button is-primary" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code (Coming Soon)</a>
-        <a class="button is-primary is-light" disabled>Dataset (coming soon)</a>
+        <a class="button is-primary" href="https://openreview.net/pdf?id=Pa7DG5Vxnt" target="_blank" rel="noopener">Paper</a>
+        <a class="button is-primary" href="https://github.com/microsoft/BusyBox/tree/main" target="_blank" rel="noopener">Code (Coming soon)</a>
+        <a class="button is-primary" href="https://huggingface.co/datasets/microsoft/BusyBox" target="_blank"rel="noopener">Dataset (Coming soon)</a>
       </div>
-      <p class="is-size-6" style="margin-top:0.75rem; color:#666;">7 task families · 720+ configurations · 1,042 demonstrations</p>
     </div>
   </div>
 </section>
@@ -100,17 +99,18 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Overview</h2>
     <div class="content has-text-justified">
-      <p>While Robot Foundation Models (RFMs) have shown impressive progress in generalizing across vision and language spaces, they still struggle with a critical capability: <strong>affordance generalization</strong> – the ability to manipulate new objects with familiar physical features. Basic interface elements like buttons and switches are designed to look and function similarly across different objects to facilitate this generalization for humans, yet current RFMs fail to achieve this basic level of understanding.</p>
-      <p>BusyBox addresses this gap by providing a systematic benchmark for evaluating how well RFMs can transfer their understanding of basic affordances (pressing buttons, flipping switches, turning knobs) to new configurations. Our experiments show that even state-of-the-art models like π0 completely fail at this seemingly simple task, highlighting a major area for improvement in robotic manipulation.</p>
+      <p>Robot Foundation Models (RFMs), also referred to as Vision-Language Action models (VLAs), have been attracting the attention of researchers and practitioners with a promise of generalizing robot behaviors across tasks, objects, and environments. The community has extensively studied RFMs' generalization capabilities in the vision and language space. However, <strong>affordance generalization</strong> – RFMs' ability to manipulate new objects with familiar physical features - remains largely unexplored. 
+        In the meantime, this meta-skill is plays a critical rule in a person's ability to quickly figure out how to handle hitherto unseen objects. In fact, basic physical interface elements like buttons and switches are designed to look and function similarly across different devices to facilitate affordance generalization in environments inhabited by people. Whether robots can capitalize on these design aids remains unknown: researchers currently lack a benchmark for systematically studing affordance generalization in RFMs. </p>
+      <p>BusyBox is a physical 3D-printable kit for systematically evaluating how well RFMs generalize their knowledge of basic affordances (pressing buttons, flipping switches, turning knobs, etc). BusyBox can be assembled into any of a multitude of distinct objects having the same set of affordances. Paired with a carefully design protocols for experiments and data collection that we present in this work, BusyBox can provide valuable insights into RFMs' ability to recognize and exploit ubiquitous affordance classes. In our experiments, BusyBox hightlights affordance generalization as a major improvement area for RFMs. </p>
     </div>
     <h3 class="title is-5">Contributions</h3>
     <ul>
-      <li><strong>BusyBox:</strong> A physical benchmark consisting of 6 swappable 3D-printed modules with switches, sliders, wires, buttons, a display, and a dial for systematic evaluation of RFMs' affordance generalization.</li>
-      <li><strong>Experiment Protocol:</strong> A methodology for assessing whether models truly understand affordances or merely memorize spatial positions, using module reconfiguration to test zero-shot transfer.</li>
-      <li><strong>Demonstration Dataset:</strong> 1,042 language-annotated trajectories (~4.8 hours) collected via Mobile ALOHA teleoperation, covering 7 task families with systematic state randomization.</li>
-      <li><strong>Instrumented Evaluation:</strong> Electronics design enabling automated task completion detection via 10Hz state logging, supporting semi-automatic evaluation of multi-step tasks.</li>
-      <li><strong>Baseline Results:</strong> Empirical evidence that even state-of-the-art models fail at basic affordance generalization (π0: 30% on trained configuration, 0% on novel arrangements).</li>
-      <li><strong>Open-Source Release:</strong> CAD files for 3D printing, bill of materials for electronics, data collection protocols, and evaluation scripts to facilitate reproducible research.</li>
+      <li><strong>BusyBox and CAD files for 3D-printing it:</strong> BusyBox's 6 swappable modules with switches, sliders, wires, buttons, a display, and a dial can be easily manufactured in many robotics labs.</li>
+      <li><strong>Dataset of demonstrations:</strong> 1000+ language-annotated demonstration trajectories collected by teleoperating a Mobile ALOHA robot, covering 7 affordance/task families with systematic initial state randomization.</li>
+      <li><strong>Experiment protocol:</strong> A methodology for assessing whether RFMs learn generalizable affordances or merely memorize spatial positions of various UI control elements.</li>
+      <!-- <li><strong>Instrumented Evaluation:</strong> Electronics design enabling automated task completion detection via 10Hz state logging, supporting semi-automatic evaluation of multi-step tasks.</li> -->
+      <li><strong>Baseline results:</strong> Empirical evidence showing that even state-of-the-art models such as π0 currently struggle with affordance generalization.</li>
+      <!-- <li><strong>Open-Source Release:</strong> CAD files for 3D printing, bill of materials for electronics, data collection protocols, and evaluation scripts to facilitate reproducible research.</li> -->
     </ul>
   </div>
 </section>
@@ -128,12 +128,12 @@
         <div class="content">
           <p>BusyBox consists of six 3D-printable modules that can be easily swapped and rotated to create multiple configurations with the same set of affordances:</p>
           <ul>
-            <li><strong>Display Module:</strong> E Ink display with LED indicators and main electronics</li>
-            <li><strong>Buttons Module:</strong> Four colored, illuminated buttons</li>
-            <li><strong>Sliders Module:</strong> Two adjustable sliders</li>
-            <li><strong>Knob Module:</strong> Rotatable knob with 6 positions and handle</li>
-            <li><strong>Switches Module:</strong> Two switches with on/off positions</li>
-            <li><strong>Wire Module:</strong> Colored wires with pluggable connectors</li>
+            <li><strong>Display module:</strong> E Ink display with LED indicators and main electronics</li>
+            <li><strong>Buttons module:</strong> Four colored, illuminated buttons</li>
+            <li><strong>Sliders module:</strong> Two adjustable sliders</li>
+            <li><strong>Knob module:</strong> Rotatable knob with 6 positions and handle</li>
+            <li><strong>Switches module:</strong> Two switches with on/off positions</li>
+            <li><strong>Wire module:</strong> Colored wires with pluggable connectors</li>
           </ul>
           <p>The modular design enables rapid reconfiguration using snap connectors, allowing researchers to systematically vary the spatial layout while maintaining consistent affordances.</p>
         </div>
@@ -144,19 +144,19 @@
 
 <section class="section" id="benchmark">
   <div class="container is-max-desktop">
-    <h2 class="title is-3">Benchmark Design</h2>
+    <h2 class="title is-3">Benchmarking protocol</h2>
     <div class="content has-text-justified">
-      <p>The BusyBox benchmark evaluates affordance generalization by training models on a canonical configuration and testing their ability to perform the same tasks on reconfigured BusyBox instances. This tests whether models truly understand the affordances or merely memorize spatial positions.</p>
+      <p>We use BusyBox to evaluate affordance generalization by finetuning RFMs on affordance demonstration data from a "canonical" BusyBox configuration and testing the resulting models on their ability to perform the demonstrated tasks on reconfigured BusyBox instances. </p>
     </div>
     <h3 class="title is-5">Task Families</h3>
     <ul>
-      <li><strong>Button Tasks:</strong> Press colored buttons (by color or position reference)</li>
-      <li><strong>Slider Tasks:</strong> Move sliders to specific positions (1-5)</li>
-      <li><strong>Knob Tasks:</strong> Rotate knob to positions (1-6) or directions</li>
-      <li><strong>Switch Tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
-      <li><strong>Wire Pull Tasks:</strong> Pull out specific colored wires</li>
-      <li><strong>Wire Insert Tasks:</strong> Insert wires into terminals</li>
-      <li><strong>BusyBox Manipulation:</strong> Rotate or move the entire BusyBox</li>
+      <li><strong>Button tasks:</strong> Press colored buttons (by color or position reference)</li>
+      <li><strong>Slider tasks:</strong> Move sliders to specific positions (1-5)</li>
+      <li><strong>Knob tasks:</strong> Rotate knob to positions (1-6) or directions</li>
+      <li><strong>Switch tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
+      <li><strong>Wire pulling tasks:</strong> Pull out specific colored wires</li>
+      <li><strong>Wire insertion tasks:</strong> Insert wires into terminals</li>
+      <li><strong>BusyBox manipulation:</strong> Rotate or move the entire BusyBox</li>
     </ul>
   </div>
 </section>
@@ -223,6 +223,7 @@
   </div>
 </section>
 
+<!--
 <section class="section" id="teleoperation">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Teleoperation Data Collection</h2>
@@ -234,7 +235,7 @@
       </div>
       <div class="column is-half order-1">
         <div class="content">
-          <p>We collected 1,042 demonstrations using Mobile ALOHA teleoperation on the canonical BusyBox configuration. The dataset covers all task families with systematic variation in:</p>
+          <p>We collected 1000+ demonstrations by teleoperating a Mobile ALOHA bimanual robot on the canonical BusyBox configuration. The dataset covers all task families with systematic variation in:</p>
           <ul>
             <li>Initial states (slider/knob positions, switch states)</li>
             <li>BusyBox position and orientation</li>
@@ -247,6 +248,7 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- <section class="section" id="evaluation">
   <div class="container is-max-desktop">
@@ -265,6 +267,7 @@
   </div>
 </section> -->
 
+<!--
 <section class="section" id="resources">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Resources</h2>
@@ -279,16 +282,16 @@
     <p class="is-size-7" style="margin-top:1rem;">For questions or collaboration inquiries, please visit our GitHub repository.</p>
   </div>
 </section>
+-->
 
 <section class="section" id="bibtex">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{busybox2025,
-  title={BusyBox: Benchmarking Affordance Generalization},
+    <pre tabindex="0"><code>@misc{busybox2025,
+  title={Benchmarking Affordance Generalization with BusyBox},
   author={Fortier, Dean and Adamson, Timothy and Hellebrekers, Tess and LaScala, Teresa and Ennin, Kofi and Murray, Michael and Kolobov, Andrey and Mullins, Galen},
-  booktitle={Eval\&Deploy@CoRL2025: Evaluation and Deployment Across the Robot Learning Lifecycle},
-  year={2025},
-  note={Workshop at the 9th Conference on Robot Learning (CoRL 2025)}
+  booktitle={Eval\&Deploy Workshop at CoRL-2025: Evaluation and Deployment Across the Robot Learning Lifecycle},
+  year={2025}
 }</code></pre>
   </div>
 </section>
@@ -296,9 +299,13 @@
 
 <footer class="footer">
   <div class="container">
-    <div class="content has-text-centered">
-      <p class="is-size-7">© 2025 BusyBox Project. Released under MIT License.</p>
-      <p class="is-size-7">Website template adapted from <a href="https://nerfies.github.io" target="_blank">Nerfies</a></p>
+    <div class="content has-text-centered is-max-desktop">
+      <a class="is-size-7" style="display:block; padding: 0 4px" href="https://www.microsoft.com/en-us/privacy/privacystatement">Privacy</a>
+      <a class="is-size-7" style="display:block; padding: 0 4px" href="https://www.microsoft.com/en-us/privacy/microsoft-consumer-health-data-privacy-policy">Consumer health privacy</a>
+      <a class="is-size-7" style="display:block; padding: 0 4px" href="https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks">Trademarks</a>
+      <a class="is-size-7" style="display:block; padding: 0 4px" href="https://www.microsoft.com/en-us/legal/terms-of-use">Terms of use</a>
+      <p class="is-size-7">© 2025 Microsoft</p>
+      <p class="is-size-7">Website template adapted from <a href="https://nerfies.github.io" style="text-decoration: underline" target="_blank">Nerfies</a></p>
     </div>
   </div>
 </footer>
