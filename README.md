@@ -2,7 +2,7 @@
 
 BusyBox is a physical 3D-printable device for benchmarking affordance generalization in robot foundation models.
 
-![busybox_assembled](assets/shuffled_box_config_1_background_removed.png)
+![busybox_assembled](assets/bb_head_no_background.png)
 
 It features
 
