@@ -10,7 +10,7 @@ It features
  - Open-source CAD files and bill of materials for easy reproduction  
  - Optional electronics and Raspberry Pi instrumentation for automated state logging  
  - Reconfigurable setups enabling systematic evaluation of generalization  
- - A language-annotated dataset of 1042 demonstrations (∼4.8 hours) on BusyBox affordances  
+ - A language-annotated dataset of 1000+ demonstration trajectories oof BusyBox affordances  
 
 Please check out our [website]() for more details.
 
@@ -26,17 +26,17 @@ The `evaluate_bringup` will now be running and the BusyBox is recording its stat
 
 ## BusyBox assembly instructions
 
-For fully building a instrumented BusyBox capable of state logging, see the [BOM](). TODO(dean) add BOM.
+For fully building a instrumented BusyBox capable of state logging, see the [BOM](). TODO: add BOM.
 
 First print the BusyBox following [Printing Instructions](cad/printing_instructions.md) with details on files to print and any details on print settings.
 
 ## Electronic Assembly:
 
-TODO(dean): add instructions on how to assemble electronics with pictures
+TODO: add instructions on how to assemble electronics with pictures
 
 ## Firmware Flashing:
 
-TODO(dean): add instructions on how to flash Arduino Nanos with firmware. 
+TODO: add instructions on how to flash Arduino Nanos with firmware. 
 
 ## Data Collection Guide
 
