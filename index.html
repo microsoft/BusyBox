@@ -101,11 +101,11 @@
     <div class="content has-text-justified">
       <p>Robot Foundation Models (RFMs), also referred to as Vision-Language Action models (VLAs), have been attracting the attention of researchers and practitioners with a promise of generalizing robot behaviors across tasks, objects, and environments. The community has extensively studied RFMs' generalization capabilities in the vision and language space. However, <strong>affordance generalization</strong> – RFMs' ability to manipulate new objects with familiar physical features - remains largely unexplored. 
         In the meantime, this meta-skill is plays a critical rule in a person's ability to quickly figure out how to handle hitherto unseen objects. In fact, basic physical interface elements like buttons and switches are designed to look and function similarly across different devices to facilitate affordance generalization in environments inhabited by people. Whether robots can capitalize on these design aids remains unknown: researchers currently lack a benchmark for systematically studing affordance generalization in RFMs. </p>
-      <p>BusyBox is a physical 3D-printable kit for systematically evaluating how well RFMs generalize their knowledge of basic affordances (pressing buttons, flipping switches, turning knobs, etc). BusyBox can be assembled into any of a multitude of distinct objects having the same set of affordances. Paired with a carefully design protocols for experiments and data collection that we present in this work, BusyBox can provide valuable insights into RFMs' ability to recognize and exploit ubiquitous classes of affordances. In our experiments, BusyBox hightlights affordance generalization as a major improvement area for RFMs. </p>
+      <p>BusyBox is a physical 3D-printable kit for systematically evaluating how well RFMs generalize their knowledge of basic affordances (pressing buttons, flipping switches, turning knobs, etc). BusyBox can be assembled into any of a multitude of distinct objects having the same set of affordances. Paired with a carefully design protocols for experiments and data collection that we present in this work, BusyBox can provide valuable insights into RFMs' ability to recognize and exploit ubiquitous affordance classes. In our experiments, BusyBox hightlights affordance generalization as a major improvement area for RFMs. </p>
     </div>
     <h3 class="title is-5">Contributions</h3>
     <ul>
-      <li><strong>BusyBox and CAD files for 3D-printing it:</strong> BusyBox is set of 6 swappable 3D-printable modules with switches, sliders, wires, buttons, a display, and a dial for systematic evaluation of RFMs' affordance generalization.</li>
+      <li><strong>BusyBox and CAD files for 3D-printing it:</strong> BusyBox's 6 swappable modules with switches, sliders, wires, buttons, a display, and a dial can be easily manufactured in many robotics labs.</li>
       <li><strong>Dataset of demonstrations:</strong> 1000+ language-annotated demonstration trajectories collected by teleoperating a Mobile ALOHA robot, covering 7 affordance/task families with systematic initial state randomization.</li>
       <li><strong>Experiment protocol:</strong> A methodology for assessing whether RFMs learn generalizable affordances or merely memorize spatial positions of various UI control elements.</li>
       <!-- <li><strong>Instrumented Evaluation:</strong> Electronics design enabling automated task completion detection via 10Hz state logging, supporting semi-automatic evaluation of multi-step tasks.</li> -->
@@ -128,12 +128,12 @@
         <div class="content">
           <p>BusyBox consists of six 3D-printable modules that can be easily swapped and rotated to create multiple configurations with the same set of affordances:</p>
           <ul>
-            <li><strong>Display Module:</strong> E Ink display with LED indicators and main electronics</li>
-            <li><strong>Buttons Module:</strong> Four colored, illuminated buttons</li>
-            <li><strong>Sliders Module:</strong> Two adjustable sliders</li>
-            <li><strong>Knob Module:</strong> Rotatable knob with 6 positions and handle</li>
-            <li><strong>Switches Module:</strong> Two switches with on/off positions</li>
-            <li><strong>Wire Module:</strong> Colored wires with pluggable connectors</li>
+            <li><strong>Display module:</strong> E Ink display with LED indicators and main electronics</li>
+            <li><strong>Buttons module:</strong> Four colored, illuminated buttons</li>
+            <li><strong>Sliders module:</strong> Two adjustable sliders</li>
+            <li><strong>Knob module:</strong> Rotatable knob with 6 positions and handle</li>
+            <li><strong>Switches module:</strong> Two switches with on/off positions</li>
+            <li><strong>Wire module:</strong> Colored wires with pluggable connectors</li>
           </ul>
           <p>The modular design enables rapid reconfiguration using snap connectors, allowing researchers to systematically vary the spatial layout while maintaining consistent affordances.</p>
         </div>
@@ -144,19 +144,19 @@
 
 <section class="section" id="benchmark">
   <div class="container is-max-desktop">
-    <h2 class="title is-3">Benchmark Design</h2>
+    <h2 class="title is-3">Benchmarking protocol</h2>
     <div class="content has-text-justified">
-      <p>The BusyBox benchmark evaluates affordance generalization by training models on a canonical configuration and testing their ability to perform the same tasks on reconfigured BusyBox instances. This tests whether models truly understand the affordances or merely memorize spatial positions.</p>
+      <p>We use BusyBox to evaluates affordance generalization by finetuning RFMs on affordance demonstration data from a "canonical" BusyBox configuration and testing the resulting models on their ability to perform the demonstrated tasks on reconfigured BusyBox instances. </p>
     </div>
     <h3 class="title is-5">Task Families</h3>
     <ul>
-      <li><strong>Button Tasks:</strong> Press colored buttons (by color or position reference)</li>
-      <li><strong>Slider Tasks:</strong> Move sliders to specific positions (1-5)</li>
-      <li><strong>Knob Tasks:</strong> Rotate knob to positions (1-6) or directions</li>
-      <li><strong>Switch Tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
-      <li><strong>Wire Pull Tasks:</strong> Pull out specific colored wires</li>
-      <li><strong>Wire Insert Tasks:</strong> Insert wires into terminals</li>
-      <li><strong>BusyBox Manipulation:</strong> Rotate or move the entire BusyBox</li>
+      <li><strong>Button tasks:</strong> Press colored buttons (by color or position reference)</li>
+      <li><strong>Slider tasks:</strong> Move sliders to specific positions (1-5)</li>
+      <li><strong>Knob tasks:</strong> Rotate knob to positions (1-6) or directions</li>
+      <li><strong>Switch tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
+      <li><strong>Wire pulling tasks:</strong> Pull out specific colored wires</li>
+      <li><strong>Wire insertion tasks:</strong> Insert wires into terminals</li>
+      <li><strong>BusyBox manipulation:</strong> Rotate or move the entire BusyBox</li>
     </ul>
   </div>
 </section>
