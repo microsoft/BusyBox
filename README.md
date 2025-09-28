@@ -12,7 +12,7 @@ It features
  - Reconfigurable setups enabling systematic evaluation of generalization  
  - A language-annotated dataset of 1000+ demonstration trajectories oof BusyBox affordances  
 
-Please check out our [website]() for more details.
+Please check out our [website](https://microsoft.github.io/BusyBox/) for more details.
 
 
 ## Quick-Start
