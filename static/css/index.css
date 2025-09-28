@@ -8,6 +8,10 @@ body {
     color: #000;
 }
 
+.footer a {
+    color: #2f6dd1;
+}
+
 .link-block a {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -71,7 +75,8 @@ body {
 }
 
 .publication-authors a {
-   color: hsl(204, 86%, 53%) !important;
+   /*color: hsl(204, 86%, 53%) !important;*/
+  color: #1677b6 !important;
 }
 
 .publication-authors a:hover {
