@@ -26,7 +26,7 @@ The `evaluate_bringup` will now be running and the BusyBox is recording its stat
 
 ## BusyBox assembly instructions
 
-For fully building a instrumented BusyBox capable of state logging, see the [BOM](). TODO: add BOM.
+For fully building a instrumented BusyBox capable of state logging, see the [BOM](BOM.md). TODO: add BOM.
 
 First print the BusyBox following [Printing Instructions](cad/printing_instructions.md) with details on files to print and any details on print settings.
 
