@@ -14,19 +14,9 @@ It features
 
 Please check out our [website](https://microsoft.github.io/BusyBox/) for more details.
 
-
-## Quick-Start
-
-```bash
-systemctl status evaluate-bringup.service
-systemctl enable evaluate-bringup.service
-systemctl restart evaluate-bringup.service
-```
-The `evaluate_bringup` will now be running and the BusyBox is recording its states during rollouts.
-
 ## BusyBox assembly instructions
 
-For fully building a instrumented BusyBox capable of state logging, see the [BOM](BOM.md). TODO: add BOM.
+For fully building a instrumented BusyBox capable of state logging, see the [BOM](BOM.md).
 
 First print the BusyBox following [Printing Instructions](cad/printing_instructions.md) with details on files to print and any details on print settings.
 
