@@ -26,7 +26,7 @@ TODO: add instructions on how to assemble electronics with pictures
 
 ## Firmware Flashing:
 
-TODO: add instructions on how to flash Arduino Nanos with firmware. 
+Instructions for flashing the Arduino Nano's firmware: [Flashing Firmware](devices/flashing_firmware.md)
 
 ## Data Collection Guide
 
