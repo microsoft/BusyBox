@@ -8,7 +8,7 @@ Some of our prints utilize the "Multi-Color Printing" feature on the Bambu P1S.
 
 ## Recipe for printing canonical BusyBox configuration
 
-All prints exist at `BusyBox/cad/BusyBoxCad`.
+All meshes exist at `BusyBox/cad/BusyBoxCad` and the solid model exists at `BusyBox/cad/Task_Box .step`.
 
 
 Each of the following are printed individually with different filaments colors:
