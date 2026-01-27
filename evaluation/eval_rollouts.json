@@ -1,0 +1,1338 @@
+{
+  "meta": {
+    "seed": 37,
+    "num_samples_per_task": 10,
+    "task_types": [
+      "flip_switch",
+      "move_bb",
+      "move_slider",
+      "pull_wire",
+      "push_button",
+      "turn_knob"
+    ],
+    "total_num_rollouts": 60,
+    "initial_box_position": " - Box centered and square relative to robot, \n    - 11 inches away from the center of the robot"
+  },
+  "eval_rollouts": [
+    {
+      "task_prompt": "Pull the black wire.",
+      "task_category": "pull_wire",
+      "target": "black",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Move the top slider to position 3.",
+      "task_category": "move_slider",
+      "target": 3,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 4.",
+      "task_category": "turn_knob",
+      "target": 4,
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Pull the white wire.",
+      "task_category": "pull_wire",
+      "target": "white",
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Push the green button with the left gripper.",
+      "task_category": "push_button",
+      "target": "green",
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 2.",
+      "task_category": "turn_knob",
+      "target": 2,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 5.",
+      "task_category": "turn_knob",
+      "target": 5,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Move the bottom slider to position 1.",
+      "task_category": "move_slider",
+      "target": 1,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Move the top slider to position 2.",
+      "task_category": "move_slider",
+      "target": 2,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Pull the red wire.",
+      "task_category": "pull_wire",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Push the red button with the right gripper.",
+      "task_category": "push_button",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Pull the blue wire.",
+      "task_category": "pull_wire",
+      "target": "blue",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Move the bottom slider to position 2.",
+      "task_category": "move_slider",
+      "target": 2,
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Flip the bottom switch off with the left gripper",
+      "task_category": "flip_switch",
+      "target": "off",
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Move the box away.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Rotate the box clockwise.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Flip the top switch on with the left gripper",
+      "task_category": "flip_switch",
+      "target": "on",
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Push the blue button with the left gripper.",
+      "task_category": "push_button",
+      "target": "blue",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Push the blue button with the right gripper.",
+      "task_category": "push_button",
+      "target": "blue",
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Push the red button with the left gripper.",
+      "task_category": "push_button",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 6.",
+      "task_category": "turn_knob",
+      "target": 6,
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Rotate the box counterclockwise.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Move the bottom slider to position 3.",
+      "task_category": "move_slider",
+      "target": 3,
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Move the box away.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Move the top slider to position 1.",
+      "task_category": "move_slider",
+      "target": 1,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 1.",
+      "task_category": "turn_knob",
+      "target": 1,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Pull the blue wire.",
+      "task_category": "pull_wire",
+      "target": "blue",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Push the red button with the right gripper.",
+      "task_category": "push_button",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Flip the bottom switch off with the right gripper",
+      "task_category": "flip_switch",
+      "target": "off",
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Pull the black wire.",
+      "task_category": "pull_wire",
+      "target": "black",
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Push the green button with the right gripper.",
+      "task_category": "push_button",
+      "target": "green",
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Flip the top switch off with the left gripper",
+      "task_category": "flip_switch",
+      "target": "off",
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Flip the bottom switch on with the left gripper",
+      "task_category": "flip_switch",
+      "target": "on",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 2.",
+      "task_category": "turn_knob",
+      "target": 2,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 5.",
+      "task_category": "turn_knob",
+      "target": 5,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Move the box closer.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Push the red button with the left gripper.",
+      "task_category": "push_button",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 3.",
+      "task_category": "turn_knob",
+      "target": 3,
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Flip the bottom switch off with the right gripper",
+      "task_category": "flip_switch",
+      "target": "off",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Move the box closer.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Rotate the box counterclockwise.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Move the box to the right.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Flip the top switch on with the right gripper",
+      "task_category": "flip_switch",
+      "target": "on",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Move the bottom slider to position 5.",
+      "task_category": "move_slider",
+      "target": 5,
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 4
+      }
+    },
+    {
+      "task_prompt": "Pull the red wire.",
+      "task_category": "pull_wire",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Move the top slider to position 5.",
+      "task_category": "move_slider",
+      "target": 5,
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 5
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Move the bottom slider to position 4.",
+      "task_category": "move_slider",
+      "target": 4,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Pull the red wire.",
+      "task_category": "pull_wire",
+      "target": "red",
+      "init_box_state": {
+        "sliders": {
+          "top": 4,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Flip the bottom switch on with the right gripper",
+      "task_category": "flip_switch",
+      "target": "on",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Flip the top switch off with the right gripper",
+      "task_category": "flip_switch",
+      "target": "off",
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Pull the blue wire.",
+      "task_category": "pull_wire",
+      "target": "blue",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Move the top slider to position 4.",
+      "task_category": "move_slider",
+      "target": 4,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Flip the top switch on with the left gripper",
+      "task_category": "flip_switch",
+      "target": "on",
+      "init_box_state": {
+        "sliders": {
+          "top": 1,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    },
+    {
+      "task_prompt": "Move the box to the left.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 2,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": true,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Push the yellow button with the left gripper.",
+      "task_category": "push_button",
+      "target": "yellow",
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 2
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Push the yellow button with the right gripper.",
+      "task_category": "push_button",
+      "target": "yellow",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 3
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": true
+        },
+        "knob_position": 5
+      }
+    },
+    {
+      "task_prompt": "Pull the white wire.",
+      "task_category": "pull_wire",
+      "target": "white",
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": false,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": true
+        },
+        "knob_position": 1
+      }
+    },
+    {
+      "task_prompt": "Rotate the box clockwise.",
+      "task_category": "move_bb",
+      "target": null,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": true,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 3
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 1.",
+      "task_category": "turn_knob",
+      "target": 1,
+      "init_box_state": {
+        "sliders": {
+          "top": 3,
+          "bottom": 4
+        },
+        "wires_inserted": {
+          "black": true,
+          "blue": false,
+          "red": true,
+          "white": false
+        },
+        "switches": {
+          "top": true,
+          "bottom": false
+        },
+        "knob_position": 2
+      }
+    },
+    {
+      "task_prompt": "Turn the knob to position 4.",
+      "task_category": "turn_knob",
+      "target": 4,
+      "init_box_state": {
+        "sliders": {
+          "top": 5,
+          "bottom": 1
+        },
+        "wires_inserted": {
+          "black": false,
+          "blue": false,
+          "red": true,
+          "white": true
+        },
+        "switches": {
+          "top": false,
+          "bottom": false
+        },
+        "knob_position": 6
+      }
+    }
+  ]
+}
