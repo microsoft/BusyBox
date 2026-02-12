@@ -71,7 +71,7 @@
       <h1 class="title is-1 publication-title">Benchmarking Affordance Generalization with BusyBox</h1>
       <p class="subtitle is-4" style="max-width: 860px; margin: 0 auto;">Modular 3D-printable robotic manipulation benchmark for evaluating affordance generalization in robot foundation models.</p>
       <div class="is-size-6 publication-authors" style="margin-top:1rem;">
-        <span class="author-block"><a href="https://www.linkedin.com/in/deanfortier/">Dean Fortier</a>,</span>
+        <span class="author-block"><a href="https://www.deanfortier.com/">Dean Fortier</a>,</span>
         <span class="author-block"><a href="https://scholar.google.com/citations?user=-NVFbtsAAAAJ&hl=en&oi=ao">Timothy Adamson</a>,</span>
         <span class="author-block"><a href="https://tesshellebrekers.com/">Tess Hellebrekers</a>,</span>
         <span class="author-block"><a href="https://www.linkedin.com/in/teresa-lascala-046130b8/">Teresa LaScala</a>,</span>
@@ -150,62 +150,22 @@
     <div class="content has-text-justified">
       <p>We use BusyBox to evaluate affordance generalization by finetuning RFMs on affordance demonstration data from a "canonical" BusyBox configuration and testing the resulting models on their ability to perform the demonstrated tasks on reconfigured BusyBox instances. </p>
     </div>
-    <h3 class="title is-5">Task Families</h3>
-    <ul>
-      <li><strong>Button tasks:</strong> Press colored buttons (by color or position reference)</li>
-      <li><strong>Slider tasks:</strong> Move sliders to specific positions (1-5)</li>
-      <li><strong>Knob tasks:</strong> Rotate knob to positions (1-6) or directions</li>
-      <li><strong>Switch tasks:</strong> Flip switches on/off (requiring bimanual coordination)</li>
-      <li><strong>Wire pulling tasks:</strong> Pull out specific colored wires</li>
-      <li><strong>Wire insertion tasks:</strong> Insert wires into terminals</li>
-      <li><strong>BusyBox manipulation:</strong> Rotate or move the entire BusyBox</li>
-    </ul>
+    <figure class="image" style="margin-top:1rem;">
+      <img src="./static/images/busybox_configurations.png" alt="BusyBox configurations" />
+    </figure>
   </div>
 </section>
 
 <section class="section" id="results">
   <div class="container is-max-desktop">
     <h2 class="title is-3">Results</h2>
-    <p class="has-text-weight-semibold" style="margin-top:1rem;">Current Robot Foundation Models Fail at Affordance Generalization</p>
-    <p>Despite high success on conventional pick-and-place tasks, leading VLAs completely fail at BusyBox's affordance generalization challenge. Even after finetuning on our dataset, π0 achieves only 30% success on the training configuration and 0% on novel configurations.</p>
-    <h3 class="title is-5" style="margin-top:2rem;">Quantitative Results</h3>
-    <div class="table-container">
-      <table class="table is-striped is-hoverable is-fullwidth is-narrow">
-        <thead>
-          <tr>
-            <th>Model Configuration</th>
-            <th>Canonical Success (%)</th>
-            <th>Config-1 Success (%)</th>
-            <th>Config-2 Success (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>π0 Zero-shot</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-          <tr><td>π0 Finetuned</td><td>30.0</td><td>0.0</td><td>0.0</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h3 class="title is-5" style="margin-top:1.5rem;">Performance by Task Type (π0 Finetuned on Canonical)</h3>
-    <div class="table-container">
-      <table class="table is-striped is-hoverable is-fullwidth is-narrow">
-        <thead>
-          <tr>
-            <th>Task Type</th>
-            <th>Success Rate (%)</th>
-            <th>Key Failure Mode</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Turn Knob</td><td>50.0</td><td>Overshooting target position</td></tr>
-          <tr><td>Pull Wire</td><td>40.0</td><td>Insufficient grip/force</td></tr>
-          <tr><td>Push Button</td><td>40.0</td><td>Missing button location</td></tr>
-          <tr><td>Move Slider</td><td>30.0</td><td>Imprecise positioning</td></tr>
-          <tr><td>Flip Switch</td><td>20.0</td><td>Lack of bimanual coordination</td></tr>
-          <tr><td>Insert Wire</td><td>0.0</td><td>Failed alignment/insertion</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="is-size-7" style="margin-top:0.5rem;">Note: The finetuned model's failures on non-canonical configurations were primarily due to reaching for wrong module positions, indicating memorization rather than affordance understanding.</p>
+    <p class="has-text-weight-semibold" style="margin-top:1rem;">Current Robot Foundation Models Struggle with Affordance Generalization</p>
+    <p>Our experiment shows that affordance generalization is a challenge even for some
+of the strongest existing VLAs and even in in-distribution settings, because it can require out-of
+distribution generalization in the visual space.</p>
+    <figure class="image" style="margin-top:1rem;">
+      <img src="./static/images/afforance_generalization_experiment_results.png" alt="Affordance generalization experiment results" />
+    </figure>
   </div>
 </section>
 
@@ -253,11 +213,14 @@
 <section class="section" id="bibtex">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre tabindex="0"><code>@misc{busybox2025,
-  title={Benchmarking Affordance Generalization with BusyBox},
-  author={Fortier, Dean and Adamson, Timothy and Hellebrekers, Tess and LaScala, Teresa and Ennin, Kofi and Murray, Michael and Kolobov, Andrey and Mullins, Galen},
-  booktitle={Eval\&Deploy Workshop at CoRL-2025: Evaluation and Deployment Across the Robot Learning Lifecycle},
-  year={2025}
+    <pre tabindex="0"><code>@misc{fortier2026benchmarkingaffordancegeneralizationbusybox,
+      title={Benchmarking Affordance Generalization with BusyBox}, 
+      author={Dean Fortier and Timothy Adamson and Tess Hellebrekers and Teresa LaScala and Kofi Ennin and Michael Murray and Andrey Kolobov and Galen Mullins},
+      year={2026},
+      eprint={2602.05441},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2602.05441}, 
 }</code></pre>
   </div>
 </section>
