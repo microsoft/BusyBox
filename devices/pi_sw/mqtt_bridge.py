@@ -227,6 +227,15 @@ def main():
     args = parse_args()
     log_fp = open(args.log_file, 'a', buffering=1) if args.log_file else None
 
+    # Print selected CLI options at program start
+    print("Selected CLI options:")
+    print(f"  --broker-host {args.broker_host}")
+    print(f"  --broker-port {args.broker_port}")
+    print(f"  --discovery-timeout {args.discovery_timeout}")
+    print(f"  --base-topic {args.base_topic}")
+    print(f"  --log-file {args.log_file}")
+    print(f"  --verbose {args.verbose}")
+
     log("Discovering modules...", file_handle=log_fp, verbose=True)
     mapping = identify_ports(args.discovery_timeout, verbose=args.verbose)
     if not mapping:

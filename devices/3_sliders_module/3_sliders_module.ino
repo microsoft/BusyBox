@@ -29,6 +29,20 @@ float emaA1 = -1.0f;
 #define MODULE_NAME "sliders_module"
 #include <alive_beacon.h>
 
+int lastOutA0 = -1; // moved from static inside loop for beacon visibility
+int lastOutA1 = -1;
+
+void beaconData() {
+  if (lastOutA0 >= 0 && lastOutA1 >= 0) {
+    Serial.print(F("Slider States: A0="));
+    Serial.print(lastOutA0);
+    Serial.print(F(" A1="));
+    Serial.println(lastOutA1);
+  } else {
+    Serial.println(F("Slider States: pending"));
+  }
+}
+
 void setup() {
   Serial.begin(SERIAL_BAUD);
   // DON'T block waiting for Serial on a Nano; that can hang on some boards.
@@ -40,6 +54,7 @@ void setup() {
   // small info line (won't block)
   Serial.println(F("A0/A1 EWMA monitor (TAU_MS=50ms, max 20Hz)"));
   lastSampleMicros = micros();
+  setAliveDataPrinter(beaconData);
   initAliveBeacon();
 }
 
@@ -67,8 +82,7 @@ void loop() {
   // Rate limit outputs to at most once per DEBOUNCE_MS (50 ms => 20 Hz)
   unsigned long nowMs = millis();
   if ((nowMs - lastOutputMs) >= DEBOUNCE_MS) {
-    static int lastOutA0 = -1;
-    static int lastOutA1 = -1;
+  // lastOutA0/lastOutA1 now globals for beacon usage
 
     int outA0 = (int)(emaA0 + 0.5f); // round
     int outA1 = (int)(emaA1 + 0.5f);

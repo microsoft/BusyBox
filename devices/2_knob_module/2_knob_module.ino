@@ -45,6 +45,11 @@ const int8_t enc_states[] = {0, -1, 1, 0,
 #define MODULE_NAME "knob_module"
 #include <alive_beacon.h>
 
+void beaconData() {
+    Serial.print(F("Knob State: "));
+    Serial.println(encoderValue);
+}
+
 void setup() {
     Serial.begin(9600);
     pinMode(pinCLK, INPUT_PULLUP);
@@ -57,6 +62,7 @@ void setup() {
     lastState = (a << 1) | b;
     lastSW = digitalRead(pinSW);
     Serial.println(F("KY-040 Rotary Encoder Test (State Machine)"));
+    setAliveDataPrinter(beaconData);
     initAliveBeacon();
 }
 
