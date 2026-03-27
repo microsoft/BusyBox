@@ -151,6 +151,7 @@ def capture_episode_state_machine(
                 )
                 if task_edge is not None:
                     data_dict['task_edge'] = task_edge  # (from_pos, to_pos)
+                # data_dict['task_instruction'] = task_instruction
                 episode_writer.write_episode(
                     data_dict,
                     task_instruction,
