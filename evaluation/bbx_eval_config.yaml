@@ -1,0 +1,20 @@
+# bbx_eval_config.yaml
+# Configuration for eval_bbx_client.py
+
+# General
+DRY_RUN: false         # set true to skip executing commands
+TASK_TIMEOUT: 30       # seconds to wait for task prompt timeout
+RECORD_VIDEOS: true    # set true to record videos of evaluation
+VIDEO_DEVICE_INDEX: 0
+
+# Paths
+TASK_EVAL_LIST_PATH: "eval_rollouts.json"
+OUTPUT_JSON_PATH: "eval_results.json"
+
+# Commands (shell strings)
+# Command to put robot arms to sleep before starting
+SLEEP_COMMAND: "python3 ~/interbotix_ws/src/aloha/scripts/sleep.py"
+
+CLIENTS_TO_EVALUATE:
+ - RUN_OPENPI_CLIENT_COMMAND: "cd /home/aloha/openpi/examples/aloha_real && source .venv/bin/activate && python3 main.py"
+ - RUN_GR00T_CLIENT_COMMAND: "cd /home/aloha/busybox_utils && python3 inference_on_aloha_client.py --headless"
