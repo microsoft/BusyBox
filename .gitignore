@@ -424,3 +424,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Evaluation result data
+robots/aloha/evaluation_results_*.json
