@@ -1,0 +1,3 @@
+pyserial
+pyyaml
+paho-mqtt

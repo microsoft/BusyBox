@@ -49,6 +49,7 @@
 #include <GxEPD2_BW.h>
 // Alive beacon (must be before any use of runAliveBeacon)
 #define MODULE_NAME "e-ink_display_module"
+#define ALIVE_IMMEDIATE_FIRST 1
 #include <alive_beacon.h>
 
 // Select the correct driver class for your specific 2.13" variant.
@@ -64,6 +65,15 @@ GxEPD2_BW<GxEPD2_213_B74, 32> display(GxEPD2_213_B74(/*CS=*/10, /*DC=*/9, /*RST=
 // (Keep modest lengths; Nano SRAM is limited. 40 chars * 2 lines * ~1 byte)
 static char line1[41] = "BusyBox"; // initial text
 static char line2[41] = "v1.0";    // initial text
+
+// Beacon data printer (placed AFTER line1/line2 so they are in scope)
+void beaconData() {
+    Serial.print(F("Display Lines: L1='"));
+    Serial.print(line1);
+    Serial.print(F("' L2='"));
+    Serial.print(line2);
+    Serial.println('\'');
+}
 
 // Incoming serial line buffer
 static char inBuf[64];
@@ -192,6 +202,7 @@ void setup() {
     display.init(9600); // keep same baud for internal debug (if enabled)
     updateDisplay();
     Serial.println(F("Ready. Send '1:Your Text' or '2:Your Text' then newline."));
+    setAliveDataPrinter(beaconData);
     initAliveBeacon();
 }
 

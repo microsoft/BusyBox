@@ -46,6 +46,16 @@ unsigned long lastEdgeTime[NUM_PINS];
 #define MODULE_NAME "switches_module"
 #include <alive_beacon.h>
 
+void beaconData() {
+  Serial.print(F("Switch States: "));
+  for (uint8_t i = 0; i < NUM_PINS; ++i) {
+    Serial.print('D'); Serial.print(pins[i]); Serial.print('=');
+    Serial.print(stableState[i] == HIGH ? '1' : '0');
+    if (i < NUM_PINS - 1) Serial.print(' ');
+  }
+  Serial.println();
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -63,6 +73,8 @@ void setup() {
   Serial.print(F("DEBOUNCE_MS="));
   Serial.println(DEBOUNCE_MS);
   printStates();
+  setAliveDataPrinter(beaconData);
+  initAliveBeacon();
 }
 
 void loop() {

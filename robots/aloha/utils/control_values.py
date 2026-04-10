@@ -1,0 +1,14 @@
+SLIDER_EXACT_VALUES = {1, 2, 3, 4, 5}
+SLIDER_INTERMDEDIATE_VALUES = {(1,2), (2,3), (3,4), (4,5)}
+SWITCH_VALUES = {0, 1}
+KNOB_EXACT_VALUES = {1, 2, 3, 4, 5, 6}
+KNOB_INTERMEDIATE_VALUES = {(1,2), (2,3), (3,4), (4,5), (5,6), (6,1)}
+WIRE_VALUES = {0, 1}
+BOX_ROTATION_VALUES = {i for i in range(-180, 180, 30)}
+ROBOT_ROTATION_VALUES = {0, -10, 10}
+BOX_DISPLACEMENT_VALUES = {0, 10}
+WIRE_FLAVOR_VALUES = {'black', 'blue', 'red', 'white'}
+BUTTON_FLAVOR_VALUES = {'red', 'blue', 'green', 'yellow'}
+GRIPPER_FLAVOR_VALUES = {'left', 'right'}
+SLIDER_FLAVOR_VALUES = {'top', 'bottom'}
+SWITCH_FLAVOR_VALUES = {'top', 'bottom'} 

@@ -42,6 +42,17 @@ unsigned long ledHoldUntil[NUM_PINS] = {0, 0, 0, 0};
 #define MODULE_NAME "buttons_module"
 #include <alive_beacon.h>
 
+// Alive beacon data line: current button states
+void beaconData() {
+  Serial.print(F("Button States: "));
+  for (uint8_t i = 0; i < NUM_PINS; ++i) {
+    Serial.print('D'); Serial.print(inputPins[i]); Serial.print('=');
+    Serial.print(stableState[i] == HIGH ? '1' : '0');
+    if (i < NUM_PINS - 1) Serial.print(' ');
+  }
+  Serial.println();
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -65,6 +76,7 @@ void setup() {
   printStates();
 
   // Initialize alive beacon AFTER initial informational prints so identity beacons are clean
+  setAliveDataPrinter(beaconData);
   initAliveBeacon();
 }
 
